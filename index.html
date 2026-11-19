@@ -31,37 +31,36 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     body {
       background-color: var(--bg-primary);
       color: var(--text-primary);
-      transition: background 0.2s, color 0.2s;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
     /* Header */
-    header {
+    .topbar {
       position: sticky;
       top: 0;
       z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
+      padding: 10px 18px;
       background-color: var(--bg-primary);
       border-bottom: 1px solid var(--border);
-      gap: 12px;
+      gap: 10px;
     }
 
-    .logo-area {
+    .logo-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .menu-btn {
+    .icon-btn {
       background: none;
       border: none;
       color: var(--text-primary);
@@ -71,48 +70,46 @@
       border-radius: 50%;
     }
 
-    .menu-btn:hover { background: var(--bg-hover); }
+    .icon-btn:hover { background: var(--bg-hover); }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 21px;
+      font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
       color: var(--text-primary);
+      text-decoration: none;
     }
 
-    .brand-icon {
+    .play-badge {
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       padding: 2px 8px;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    .search-bar {
+    .search-box {
       display: flex;
       flex: 1;
-      max-width: 550px;
+      max-width: 520px;
     }
 
-    .search-bar input {
+    .search-box input {
       width: 100%;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 20px 0 0 20px;
       border: 1px solid var(--border);
       background: var(--bg-secondary);
       color: var(--text-primary);
       outline: none;
-      font-size: 15px;
+      font-size: 14px;
     }
 
-    .search-bar input:focus { border-color: #1c62b9; }
-
-    .search-bar button {
-      padding: 9px 18px;
+    .search-box button {
+      padding: 8px 16px;
       border-radius: 0 20px 20px 0;
       border: 1px solid var(--border);
       border-left: none;
@@ -121,107 +118,87 @@
       cursor: pointer;
     }
 
-    .nav-actions {
+    .actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .btn {
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--bg-chip);
       color: var(--text-primary);
       cursor: pointer;
-      font-weight: 600;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      font-weight: bold;
+      font-size: 13px;
     }
 
     .btn:hover { background: var(--bg-hover); }
 
-    .btn-primary {
+    .btn-red {
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       border: none;
     }
 
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-red:hover { background: var(--accent-hover); }
 
-    /* Main Layout */
-    .layout {
+    /* Layout */
+    .wrapper {
       display: flex;
-      min-height: calc(100vh - 58px);
+      min-height: calc(100vh - 56px);
     }
 
-    /* Sidebar */
-    aside {
-      width: 225px;
-      background: var(--bg-primary);
+    .sidebar {
+      width: 215px;
       border-right: 1px solid var(--border);
       padding: 12px 8px;
       flex-shrink: 0;
     }
 
-    aside.collapsed { width: 72px; }
-    aside.collapsed .nav-text, aside.collapsed .side-heading { display: none; }
+    .sidebar.mini { width: 68px; }
+    .sidebar.mini .label-txt { display: none; }
 
-    .side-heading {
-      font-size: 12px;
-      color: var(--text-secondary);
-      padding: 8px 14px 4px;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .nav-item {
+    .side-link {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 10px 14px;
+      gap: 14px;
+      padding: 10px 12px;
       border-radius: 10px;
       cursor: pointer;
-      color: var(--text-primary);
       font-size: 14px;
       margin-bottom: 4px;
     }
 
-    .nav-item:hover, .nav-item.active { background: var(--bg-hover); font-weight: 600; }
-
-    hr.divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 10px 0;
+    .side-link:hover, .side-link.active {
+      background: var(--bg-hover);
+      font-weight: bold;
     }
 
-    /* Main Content */
-    main {
+    .content {
       flex: 1;
-      padding: 16px 24px;
-      overflow-y: auto;
+      padding: 16px 20px;
     }
 
-    /* Category Chips */
-    .chips {
+    /* Chips */
+    .chip-bar {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 14px;
+      padding-bottom: 12px;
       margin-bottom: 16px;
     }
 
     .chip {
-      padding: 7px 14px;
+      padding: 6px 14px;
       border-radius: 8px;
       background: var(--bg-chip);
       color: var(--text-primary);
       border: none;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 13px;
       white-space: nowrap;
     }
 
@@ -230,49 +207,46 @@
       color: var(--bg-primary);
     }
 
-    /* Video Grid */
-    .video-grid {
+    /* Grid */
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
     }
 
-    .video-card {
+    .card {
       cursor: pointer;
-      transition: transform 0.15s;
     }
 
-    .video-card:hover { transform: translateY(-2px); }
-
-    .thumb-wrap {
+    .thumb-box {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: #000;
-      border-radius: 12px;
+      background: #000000;
+      border-radius: 10px;
       overflow: hidden;
     }
 
-    .thumb-wrap img {
+    .thumb-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .badge-duration {
+    .dur-tag {
       position: absolute;
-      bottom: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      font-size: 12px;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #ffffff;
+      font-size: 11px;
       padding: 2px 6px;
       border-radius: 4px;
     }
 
-    .video-info {
+    .card-body {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       margin-top: 10px;
     }
 
@@ -281,7 +255,7 @@
       height: 36px;
       border-radius: 50%;
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -289,56 +263,52 @@
       flex-shrink: 0;
     }
 
-    .meta h4 {
+    .card-meta h4 {
       font-size: 15px;
-      line-height: 1.3;
       margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      line-height: 1.3;
     }
 
-    .meta p {
-      font-size: 13px;
+    .card-meta p {
+      font-size: 12px;
       color: var(--text-secondary);
     }
 
-    /* Watch Player Page */
-    .watch-container {
+    /* Watch Section */
+    .watch-view {
       display: none;
-      grid-template-columns: 1fr 360px;
-      gap: 24px;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
     }
 
-    .watch-container.active { display: grid; }
+    .watch-view.show { display: grid; }
 
-    .player-box video {
+    video#player {
       width: 100%;
-      max-height: 540px;
-      background: #000;
-      border-radius: 12px;
+      max-height: 500px;
+      background: #000000;
+      border-radius: 10px;
     }
 
-    .watch-title {
-      font-size: 20px;
-      margin: 14px 0 10px;
+    .w-title {
+      font-size: 19px;
+      margin: 12px 0;
     }
 
-    .watch-bar {
+    .w-controls {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
 
-    .channel-box {
+    .ch-info {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .sub-btn {
@@ -347,133 +317,135 @@
       border: none;
       padding: 8px 16px;
       border-radius: 20px;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .sub-btn.subscribed {
+    .sub-btn.done {
       background: var(--bg-chip);
       color: var(--text-primary);
       border: 1px solid var(--border);
     }
 
-    .action-pills {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .desc-box {
+    .desc-card {
       background: var(--bg-secondary);
       padding: 12px;
       border-radius: 10px;
-      margin-top: 14px;
-      font-size: 14px;
-      line-height: 1.5;
+      margin-top: 12px;
+      font-size: 13px;
     }
 
-    /* Comments Section */
-    .comments-section { margin-top: 20px; }
-    .comment-form {
+    .comment-box { margin-top: 18px; }
+    .c-form {
       display: flex;
-      gap: 10px;
-      margin: 12px 0 18px;
+      gap: 8px;
+      margin: 10px 0 16px;
       flex-wrap: wrap;
     }
-    .comment-form input {
-      padding: 10px;
+    .c-form input {
+      padding: 9px 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
       background: var(--bg-secondary);
       color: var(--text-primary);
     }
-    .comment-item {
+    .c-item {
       display: flex;
       gap: 10px;
-      margin-bottom: 14px;
-      font-size: 14px;
       background: var(--bg-secondary);
       padding: 10px;
       border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
 
-    /* Up Next List */
-    .up-next-item {
+    .next-card {
       display: flex;
       gap: 10px;
       margin-bottom: 12px;
       cursor: pointer;
     }
-    .up-next-item img {
-      width: 150px;
-      aspect-ratio: 16/9;
+    .next-card img {
+      width: 140px;
+      aspect-ratio: 16 / 9;
       object-fit: cover;
       border-radius: 8px;
     }
 
-    /* Upload Modal */
-    .modal-overlay {
+    /* Modal */
+    .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0, 0, 0, 0.8);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 200;
-      padding: 16px;
+      z-index: 300;
+      padding: 14px;
     }
 
-    .modal-overlay.open { display: flex; }
+    .modal-bg.open { display: flex; }
 
-    .modal {
+    .modal-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       width: 100%;
-      max-width: 520px;
-      padding: 22px;
+      max-width: 480px;
+      padding: 20px;
       max-height: 90vh;
       overflow-y: auto;
     }
 
-    .modal h3 { margin-bottom: 14px; }
-
-    .form-group { margin-bottom: 12px; }
-    .form-group label {
+    .field { margin-bottom: 12px; }
+    .field label {
       display: block;
-      font-size: 13px;
-      margin-bottom: 5px;
+      font-size: 12px;
       color: var(--text-secondary);
+      margin-bottom: 4px;
     }
-    .form-group input, .form-group select, .form-group textarea {
+    .field input, .field select, .field textarea {
       width: 100%;
-      padding: 9px 12px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       background: var(--bg-primary);
       color: var(--text-primary);
       font-size: 14px;
     }
 
-    .github-box {
-      background: rgba(255, 0, 0, 0.08);
-      border: 1px dashed var(--accent);
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 12px;
+    @media (max-width: 850px) {
+      .watch-view.show { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
     }
+  </style>
+</head>
+<body>
 
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 16px;
-    }
+  <div class="topbar">
+    <div class="logo-wrap">
+      <button class="icon-btn" onclick="toggleMenu()">☰</button>
+      <a class="brand" onclick="showHome()">
+        <span class="play-badge">▶</span> AkyTube
+      </a>
+    </div>
 
-    #uploadStatus {
-      font-size: 13px;
-      color: #4caf50;
-      margin-top: 8px;
-      display: none;
-    }
+    <div class="search-box">
+      <input type="text" id="searchBox" placeholder="Search videos..." onkeyup="renderVideos()" />
+      <button onclick="renderVideos()">🔍</button>
+    </div>
 
+    <div class="actions">
+      <button class="btn btn-red" onclick="openModal()">+ Upload</button>
+      <button class="btn" onclick="resetAll()">Reset</button>
+      <button class="btn" id="modeBtn" onclick="switchTheme()">☀️</button>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div class="sidebar" id="sideNav">
+      <div class="side-link active" onclick="setNav('all', this)">🏠 <span class="label-txt">Home</span></div>
+      <div class="side-link" onclick="setNav('trending', this)">🔥 <span class="label-txt">Trending</span></div>
+      <div class="side-link" onclick="setNav('subs', this)">📺 <span class="label-txt">Subscriptions</span></div>
+      <div class="side-link" onclick="setNav('history', this)">📜 <span class="label-txt">History</span></div>
+      <div class="side-link" onclick="setNav('later', this)">⏰ <span class="label-txt">Watch Later</span></div>
