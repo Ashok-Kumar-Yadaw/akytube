@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AkyTube - वीडियो स्ट्रीमिंग प्लेटफॉर्म</title>
+  <title>AkyTube - Video Streaming Platform</title>
   <style>
     :root {
       --bg-primary: #0f0f0f;
@@ -41,7 +41,7 @@
       overflow-x: hidden;
     }
 
-    /* हेडर / नेविगेशन बार */
+    /* Header */
     header {
       position: sticky;
       top: 0;
@@ -139,7 +139,6 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: 0.15s;
     }
 
     .btn:hover { background: var(--bg-hover); }
@@ -152,13 +151,13 @@
 
     .btn-primary:hover { background: var(--accent-hover); }
 
-    /* मुख्य लेआउट */
+    /* Main Layout */
     .layout {
       display: flex;
       min-height: calc(100vh - 58px);
     }
 
-    /* साइडबार */
+    /* Sidebar */
     aside {
       width: 225px;
       background: var(--bg-primary);
@@ -198,14 +197,14 @@
       margin: 10px 0;
     }
 
-    /* मुख्य कंटेंट एरिया */
+    /* Main Content */
     main {
       flex: 1;
       padding: 16px 24px;
       overflow-y: auto;
     }
 
-    /* कैटेगरी चिप्स */
+    /* Category Chips */
     .chips {
       display: flex;
       gap: 10px;
@@ -231,7 +230,7 @@
       color: var(--bg-primary);
     }
 
-    /* वीडियो ग्रिड */
+    /* Video Grid */
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -305,7 +304,7 @@
       color: var(--text-secondary);
     }
 
-    /* वीडियो प्लेयर पेज */
+    /* Watch Player Page */
     .watch-container {
       display: none;
       grid-template-columns: 1fr 360px;
@@ -373,7 +372,7 @@
       line-height: 1.5;
     }
 
-    /* कमेंट सेक्शन */
+    /* Comments Section */
     .comments-section { margin-top: 20px; }
     .comment-form {
       display: flex;
@@ -398,7 +397,7 @@
       border-radius: 8px;
     }
 
-    /* अगले वीडियो */
+    /* Up Next List */
     .up-next-item {
       display: flex;
       gap: 10px;
@@ -412,7 +411,7 @@
       border-radius: 8px;
     }
 
-    /* अपलोड मॉडल (Popup) */
+    /* Upload Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -474,3 +473,7 @@
     #uploadStatus {
       font-size: 13px;
       color: #4caf50;
+      margin-top: 8px;
+      display: none;
+    }
+
