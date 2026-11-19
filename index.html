@@ -6,189 +6,179 @@
   <title>AkyTube - Video Streaming Platform</title>
   <style>
     :root {
-      --bg-main: #0f0f0f;
-      --bg-card: #181818;
-      --bg-hover: #272727;
-      --bg-chip: #222222;
-      --text-main: #ffffff;
-      --text-sub: #aaaaaa;
-      --red: #ff0000;
-      --border: #303030;
+      --bg: #0f0f0f; --card: #181818; --hover: #272727;
+      --txt: #ffffff; --sub: #aaaaaa; --red: #ff0000; --bdr: #303030;
     }
     body.light {
-      --bg-main: #ffffff;
-      --bg-card: #f4f4f4;
-      --bg-hover: #e2e2e2;
-      --bg-chip: #eeeeee;
-      --text-main: #0f0f0f;
-      --text-sub: #555555;
-      --border: #dddddd;
+      --bg: #ffffff; --card: #f2f2f2; --hover: #e5e5e5;
+      --txt: #0f0f0f; --sub: #606060; --bdr: #dddddd;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background: var(--bg-main); color: var(--text-main); }
-
-    .header {
-      position: sticky; top: 0; z-index: 50;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 16px; background: var(--bg-main); border-bottom: 1px solid var(--border);
-      gap: 10px;
+    body { background: var(--bg); color: var(--txt); }
+    header {
+      position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between;
+      align-items: center; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--bdr); gap: 8px;
     }
-    .logo-box { display: flex; align-items: center; gap: 10px; }
     .logo { font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .logo span { background: var(--red); color: #fff; padding: 2px 7px; border-radius: 5px; font-size: 13px; }
-    .search-wrap { display: flex; flex: 1; max-width: 500px; }
-    .search-wrap input {
+    .search { display: flex; flex: 1; max-width: 480px; }
+    .search input {
       width: 100%; padding: 8px 14px; border-radius: 20px 0 0 20px;
-      border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); outline: none;
+      border: 1px solid var(--bdr); background: var(--card); color: var(--txt); outline: none;
     }
-    .search-wrap button {
-      padding: 8px 16px; border-radius: 0 20px 20px 0;
-      border: 1px solid var(--border); border-left: none; background: var(--bg-chip); color: var(--text-main); cursor: pointer;
+    .search button {
+      padding: 8px 14px; border-radius: 0 20px 20px 0; border: 1px solid var(--bdr);
+      border-left: none; background: var(--card); color: var(--txt); cursor: pointer;
     }
     .btn {
-      padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
-      background: var(--bg-chip); color: var(--text-main); cursor: pointer; font-weight: bold; font-size: 13px;
+      padding: 7px 13px; border-radius: 20px; border: 1px solid var(--bdr);
+      background: var(--card); color: var(--txt); cursor: pointer; font-weight: bold; font-size: 13px;
     }
-    .btn:hover { background: var(--bg-hover); }
+    .btn:hover { background: var(--hover); }
     .btn-red { background: var(--red); color: #fff; border: none; }
-
-    .container { display: flex; min-height: calc(100vh - 54px); }
-    .sidebar { width: 200px; border-right: 1px solid var(--border); padding: 10px; flex-shrink: 0; }
-    .sidebar.hide { display: none; }
-    .nav-btn {
-      display: block; width: 100%; text-align: left; padding: 10px 12px;
-      background: none; border: none; color: var(--text-main); border-radius: 8px;
-      cursor: pointer; font-size: 14px; margin-bottom: 4px;
+    .wrap { display: flex; min-height: calc(100vh - 54px); }
+    aside { width: 195px; border-right: 1px solid var(--bdr); padding: 10px; flex-shrink: 0; }
+    aside.hide { display: none; }
+    .nav {
+      display: block; width: 100%; text-align: left; padding: 10px 12px; background: none;
+      border: none; color: var(--txt); border-radius: 8px; cursor: pointer; font-size: 14px; margin-bottom: 4px;
     }
-    .nav-btn:hover, .nav-btn.active { background: var(--bg-hover); font-weight: bold; }
-
-    .main-area { flex: 1; padding: 16px; }
-
-    .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 14px; }
-    .cat-btn {
-      padding: 6px 14px; border-radius: 8px; border: none;
-      background: var(--bg-chip); color: var(--text-main); cursor: pointer; font-size: 13px; white-space: nowrap;
+    .nav:hover, .nav.active { background: var(--hover); font-weight: bold; }
+    main { flex: 1; padding: 16px; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 14px; }
+    .chip {
+      padding: 6px 14px; border-radius: 8px; border: none; background: var(--card);
+      color: var(--txt); cursor: pointer; font-size: 13px; white-space: nowrap;
     }
-    .cat-btn.active { background: var(--text-main); color: var(--bg-main); font-weight: bold; }
-
-    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px; }
-    .v-card { cursor: pointer; }
+    .chip.active { background: var(--txt); color: var(--bg); font-weight: bold; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card { cursor: pointer; }
     .thumb { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; }
     .thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .badge { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.8); color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; }
-    .v-info { display: flex; gap: 10px; margin-top: 8px; }
-    .avatar {
+    .tag { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.8); color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+    .info { display: flex; gap: 10px; margin-top: 8px; }
+    .av {
       width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff;
       display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;
     }
-    .v-info h4 { font-size: 14px; margin-bottom: 3px; }
-    .v-info p { font-size: 12px; color: var(--text-sub); }
-
-    .watch-box { display: none; grid-template-columns: 1fr 320px; gap: 20px; }
-    .watch-box.active { display: grid; }
-    video { width: 100%; max-height: 480px; background: #000; border-radius: 10px; }
-    .w-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-    .sub-btn { background: var(--text-main); color: var(--bg-main); border: none; padding: 7px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-    .sub-btn.subbed { background: var(--bg-chip); color: var(--text-main); border: 1px solid var(--border); }
-    .desc-panel { background: var(--bg-card); padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 13px; }
-    .comment-form { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-    .comment-form input { padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); }
-    .comment-card { display: flex; gap: 10px; background: var(--bg-card); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
-    .next-item { display: flex; gap: 10px; margin-bottom: 10px; cursor: pointer; }
-    .next-item img { width: 130px; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; }
-
+    .info h4 { font-size: 14px; margin-bottom: 3px; }
+    .info p { font-size: 12px; color: var(--sub); }
+    .watch { display: none; grid-template-columns: 1fr 310px; gap: 20px; }
+    .watch.show { display: grid; }
+    video { width: 100%; max-height: 460px; background: #000; border-radius: 10px; }
+    .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--bdr); }
+    .sub { background: var(--txt); color: var(--bg); border: none; padding: 7px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    .sub.done { background: var(--card); color: var(--txt); border: 1px solid var(--bdr); }
+    .desc { background: var(--card); padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 13px; }
+    .cform { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+    .cform input { padding: 8px 10px; border-radius: 6px; border: 1px solid var(--bdr); background: var(--card); color: var(--txt); }
+    .citem { display: flex; gap: 10px; background: var(--card); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
+    .next { display: flex; gap: 10px; margin-bottom: 10px; cursor: pointer; }
+    .next img { width: 125px; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; }
     .modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none;
+      align-items: center; justify-content: center; z-index: 100; padding: 14px;
     }
     .modal.open { display: flex; }
-    .modal-box {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-      width: 100%; max-width: 460px; padding: 20px; max-height: 90vh; overflow-y: auto;
+    .mbox {
+      background: var(--card); border: 1px solid var(--bdr); border-radius: 12px;
+      width: 100%; max-width: 450px; padding: 18px; max-height: 90vh; overflow-y: auto;
     }
-    .inp-group { margin-bottom: 12px; }
-    .inp-group label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 4px; }
-    .inp-group input, .inp-group select, .inp-group textarea {
-      width: 100%; padding: 8px 10px; border-radius: 6px;
-      border: 1px solid var(--border); background: var(--bg-main); color: var(--text-main); font-size: 14px;
+    .fg { margin-bottom: 10px; }
+    .fg label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 4px; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bdr);
+      background: var(--bg); color: var(--txt); font-size: 14px;
     }
-
     @media (max-width: 800px) {
-      .watch-box.active { grid-template-columns: 1fr; }
-      .sidebar { position: fixed; left: 0; top: 54px; bottom: 0; background: var(--bg-main); z-index: 40; }
+      .watch.show { grid-template-columns: 1fr; }
+      aside { position: fixed; left: 0; top: 54px; bottom: 0; background: var(--bg); z-index: 40; }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo-box">
-      <button class="btn" onclick="toggleMenu()">☰</button>
-      <div class="logo" onclick="goHome()"><span>▶</span> AkyTube</div>
-    </div>
-    <div class="search-wrap">
-      <input type="text" id="searchInput" placeholder="वीडियो या चैनल खोजें..." oninput="drawGrid()" />
-      <button onclick="drawGrid()">🔍</button>
-    </div>
-    <div style="display:flex; gap:6px;">
-      <button class="btn btn-red" onclick="openUpload()">+ Upload</button>
-      <button class="btn" onclick="resetApp()">Reset</button>
-      <button class="btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
-    </div>
+<header>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <button class="btn" id="btnSide">☰</button>
+    <div class="logo" id="btnLogo"><span>▶</span> AkyTube</div>
   </div>
+  <div class="search">
+    <input type="text" id="q" placeholder="Search videos..." />
+    <button id="btnSearch">🔍</button>
+  </div>
+  <div style="display:flex; gap:6px;">
+    <button class="btn btn-red" id="btnOpenUp">+ Upload</button>
+    <button class="btn" id="btnReset">Reset</button>
+    <button class="btn" id="tBtn">☀️</button>
+  </div>
+</header>
 
-  <div class="container">
-    <div class="sidebar" id="sidebar">
-      <button class="nav-btn active" onclick="setTab('all', this)">🏠 होम (Home)</button>
-      <button class="nav-btn" onclick="setTab('trending', this)">🔥 ट्रेंडिंग (Trending)</button>
-      <button class="nav-btn" onclick="setTab('subs', this)">📺 सब्सक्रिप्शन</button>
-      <button class="nav-btn" onclick="setTab('history', this)">📜 वॉच हिस्ट्री</button>
-      <button class="nav-btn" onclick="setTab('later', this)">⏰ बाद में देखें</button>
-      <button class="nav-btn" onclick="setTab('liked', this)">👍 पसंद किए गए</button>
+<div class="wrap">
+  <aside id="side">
+    <button class="nav active" data-t="all">🏠 Home</button>
+    <button class="nav" data-t="trending">🔥 Trending</button>
+    <button class="nav" data-t="subs">📺 Subscriptions</button>
+    <button class="nav" data-t="history">📜 History</button>
+    <button class="nav" data-t="later">⏰ Watch Later</button>
+    <button class="nav" data-t="liked">👍 Liked Videos</button>
+  </aside>
+
+  <main>
+    <div id="homeBox">
+      <div class="chips">
+        <button class="chip active" data-c="All">All</button>
+        <button class="chip" data-c="My Channel">My Channel</button>
+        <button class="chip" data-c="Tech">Tech</button>
+        <button class="chip" data-c="Music">Music</button>
+        <button class="chip" data-c="Gaming">Gaming</button>
+      </div>
+      <div class="grid" id="grid"></div>
     </div>
 
-    <div class="main-area">
-      <div id="homeView">
-        <div class="cats">
-          <button class="cat-btn active" onclick="setCategory('All', this)">सभी (All)</button>
-          <button class="cat-btn" onclick="setCategory('My Channel', this)">My Channel</button>
-          <button class="cat-btn" onclick="setCategory('Tech', this)">Tech</button>
-          <button class="cat-btn" onclick="setCategory('Music', this)">Music</button>
-          <button class="cat-btn" onclick="setCategory('Gaming', this)">Gaming</button>
-          <button class="cat-btn" onclick="setCategory('Education', this)">Education</button>
+    <div class="watch" id="watchBox">
+      <div>
+        <button class="btn" id="btnBack" style="margin-bottom:10px;">← Back to Home</button>
+        <video id="vid" controls></video>
+        <h2 id="wt" style="margin-top:10px; font-size:18px;"></h2>
+        <div class="bar">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="av" id="wav">A</div>
+            <div><strong id="wch"></strong><div style="font-size:12px; color:var(--sub);">1.5K subscribers</div></div>
+            <button class="sub" id="sBtn">Subscribe</button>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="btn" id="lBtn">👍 <span id="lc">0</span></button>
+            <button class="btn" id="wBtn">⏰ Save</button>
+            <button class="btn" id="shBtn">🔗 Share</button>
+            <button class="btn" id="dBtn" style="color:#ff5555;">🗑️ Delete</button>
+          </div>
         </div>
-        <div class="video-grid" id="videoGrid"></div>
+        <div class="desc"><strong id="wm"></strong><p id="wd" style="margin-top:6px;"></p></div>
+        <div style="margin-top:16px;">
+          <h3 id="chd">Comments</h3>
+          <div class="cform">
+            <input type="text" id="cn" placeholder="Your Name" style="max-width:130px;" />
+            <input type="text" id="cm" placeholder="Add a comment..." style="flex:1;" />
+            <button class="btn btn-red" id="cBtn">Comment</button>
+          </div>
+          <div id="clist"></div>
+        </div>
       </div>
+      <div><h3 style="margin-bottom:10px;">Up Next</h3><div id="nextList"></div></div>
+    </div>
+  </main>
+</div>
 
-      <div class="watch-box" id="watchView">
-        <div>
-          <button class="btn" onclick="goHome()" style="margin-bottom:10px;">← होम पर वापस जाएं</button>
-          <video id="videoPlayer" controls></video>
-          <h2 id="wTitle" style="margin-top:10px; font-size:18px;">Title</h2>
-
-          <div class="w-bar">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div class="avatar" id="wAvatar">A</div>
-              <div>
-                <strong id="wChannel">Channel</strong>
-                <div style="font-size:12px; color:var(--text-sub);">1.5K सब्सक्राइबर्स</div>
-              </div>
-              <button class="sub-btn" id="subBtn" onclick="toggleSubscribe()">Subscribe</button>
-            </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-              <button class="btn" id="likeBtn" onclick="toggleLike()">👍 <span id="likeCount">0</span></button>
-              <button class="btn" id="laterBtn" onclick="toggleLater()">⏰ Save</button>
-              <button class="btn" onclick="shareLink()">🔗 Share</button>
-              <button class="btn" onclick="deleteVideo()" style="color:#ff5555;">🗑️ Delete</button>
-            </div>
-          </div>
-
-          <div class="desc-panel">
-            <strong id="wMeta">0 views</strong>
-            <p id="wDesc" style="margin-top:6px;"></p>
-          </div>
-
-          <div style="margin-top:16px;">
-            <h3 id="cHeading">कमेंट्स</h3>
-            <div class="comment-form">
-              <input type="text" id="cUser" placeholder="आपका नाम" style="max-width:130px;" />
+<div class="modal" id="upModal">
+  <div class="mbox">
+    <h3 style="margin-bottom:12px;">Naya Video Upload Karein</h3>
+    <div class="fg"><label>Video Title *</label><input type="text" id="ut" placeholder="Video title..." /></div>
+    <div class="fg"><label>Channel Name</label><input type="text" id="uc" value="My Channel" /></div>
+    <div class="fg"><label>Category</label>
+      <select id="ucat"><option value="Tech">Tech</option><option value="Music">Music</option><option value="Gaming">Gaming</option></select>
+    </div>
+    <div class="fg"><label>MP4 File Chunein (Browser / Repo me save hoga):</label><input type="file" id="uf" accept="video/mp4,video/*" /></div>
+    <div class="fg"><label>GitHub Token (Optional - Seedhe Repo me save karne ke liye):</label><input type="password" id="ght" placeholder="ghp_xxxxxxxxxxxx" /></div>
+    <div class="fg"><label>Direct MP4 URL:</label><input type="url" id="uu" value="https://googleapis.com" /></div>
+    <div class="fg"><label>Thumbnail URL:</label><input type="url" id="uth" value="https://unsplash.com" /></div>
