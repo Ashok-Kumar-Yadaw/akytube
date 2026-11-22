@@ -1,137 +1,1104 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f0f0f">
-<title>AkyTube — Video Platform</title>
+<title>AkyTube - Video Sharing</title>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
 <style>
-:root{--bg:#0f0f0f;--panel:#181818;--panel2:#222;--text:#f5f5f5;--muted:#aaa;--line:#303030;--accent:#ff0033;--hover:#303030}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}body.light{--bg:#f9f9f9;--panel:#fff;--panel2:#eee;--text:#171717;--muted:#606060;--line:#ddd;--hover:#e9e9e9}
-button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}header{height:62px;position:sticky;top:0;z-index:30;background:var(--panel);display:flex;align-items:center;gap:14px;padding:0 18px;border-bottom:1px solid var(--line)}
-.logo{font-size:21px;font-weight:bold;white-space:nowrap;cursor:pointer}.logo b{background:#f00;border-radius:7px;padding:6px 8px;margin-right:6px}.searchwrap{display:flex;flex:1;max-width:680px;margin:auto;position:relative}.searchwrap input{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:24px 0 0 24px;background:var(--bg);color:var(--text);outline:none}.searchwrap button{border:1px solid var(--line);background:var(--panel2);padding:0 20px;border-radius:0 24px 24px 0}.iconbtn,.btn{border:0;background:var(--panel2);padding:10px 13px;border-radius:22px}.iconbtn:hover,.btn:hover{background:var(--hover)}.red{background:var(--accent);color:white}.red:hover{background:#cf002a}.topright{display:flex;gap:8px;align-items:center}
-.layout{display:flex}.sidebar{width:220px;flex-shrink:0;height:calc(100vh - 62px);overflow:auto;position:sticky;top:62px;padding:12px;border-right:1px solid var(--line)}.nav{display:flex;align-items:center;gap:18px;padding:12px;border-radius:10px;cursor:pointer;margin:2px 0}.nav:hover,.nav.active{background:var(--hover);font-weight:bold}.nav .ico{width:22px;text-align:center;font-size:18px}.navtitle{color:var(--muted);font-size:12px;padding:14px 12px 5px}.main{min-width:0;flex:1;padding:18px 24px}.chips{display:flex;gap:9px;overflow:auto;padding:0 0 18px;white-space:nowrap}.chip{background:var(--panel2);border:0;border-radius:9px;padding:9px 14px}.chip.active{background:var(--text);color:var(--bg);font-weight:bold}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:24px 16px}.card{cursor:pointer;min-width:0}.thumb{height:155px;position:relative;background:#222;border-radius:12px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.duration{position:absolute;right:7px;bottom:7px;background:#000c;padding:4px 6px;border-radius:4px;font-size:11px}.cardrow{display:flex;gap:10px;padding-top:11px}.avatar{width:38px;height:38px;border-radius:50%;background:#555;display:grid;place-items:center;flex-shrink:0;font-weight:bold}.ctitle{font-weight:bold;line-height:1.4;margin-bottom:6px}.sub{color:var(--muted);font-size:12px;line-height:1.55}.dots{margin-left:auto;background:none;border:0;font-size:20px}
-#playerView{display:none;max-width:1450px;margin:auto}.playergrid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:24px}.videoarea video{width:100%;max-height:72vh;background:#000;border-radius:12px}.videotitle{font-size:20px;margin:14px 0}.channelrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.channelinfo{flex:1;min-width:150px}.actions{display:flex;gap:7px;flex-wrap:wrap}.pill{border:0;background:var(--panel2);border-radius:22px;padding:10px 14px}.pill.active{background:#454545}.description{background:var(--panel);padding:14px;border-radius:12px;margin-top:14px;line-height:1.6;white-space:pre-wrap}.sectiontitle{font-size:18px;margin:22px 0 12px}.commentbox{display:flex;gap:9px;margin:12px 0}.commentbox input{flex:1;min-width:0;background:transparent;color:var(--text);border:0;border-bottom:1px solid var(--line);padding:10px}.comment{display:flex;gap:12px;margin:18px 0}.commenttext{line-height:1.5}.commentmeta{font-size:12px;color:var(--muted);margin-bottom:5px}.recommend .mini{display:flex;gap:10px;margin-bottom:13px;cursor:pointer}.mini img{width:168px;height:95px;object-fit:cover;border-radius:9px}.mini .ctitle{font-size:13px}
-.modal{display:none;position:fixed;inset:0;background:#000b;z-index:80;align-items:center;justify-content:center;padding:16px}.modalbox{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px;width:min(520px,100%);max-height:90vh;overflow:auto}.modalhead{display:flex;justify-content:space-between;align-items:center}.field{margin:12px 0}.field label{display:block;color:var(--muted);margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px}.field textarea{min-height:85px;resize:vertical}.empty{color:var(--muted);padding:40px;text-align:center}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:12px 18px;border-radius:25px;display:none;z-index:100}.profilemenu{display:none;position:absolute;right:15px;top:55px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;z-index:60;min-width:190px}.profilemenu button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px;border-radius:7px}.profilemenu button:hover{background:var(--hover)}.shortsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px}.shortcard{height:320px;border-radius:12px;overflow:hidden;position:relative;background:#222;cursor:pointer}.shortcard img{width:100%;height:100%;object-fit:cover}.shortcard span{position:absolute;bottom:0;left:0;right:0;padding:15px;background:linear-gradient(transparent,#000c);font-weight:bold}
-#miniPlayer{display:none;position:fixed;right:18px;bottom:18px;width:310px;background:var(--panel);padding:9px;border:1px solid var(--line);border-radius:12px;z-index:70;box-shadow:0 5px 25px #0008}#miniPlayer video{width:100%;max-height:175px;background:#000}.minihead{display:flex;justify-content:space-between;align-items:center;padding:5px}
-@media(max-width:900px){.sidebar{width:75px}.nav{justify-content:center}.nav .navtxt,.navtitle{display:none}.playergrid{grid-template-columns:1fr}.recommend{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}.mini img{width:42%}}
-@media(max-width:620px){header{padding:0 9px;gap:7px}.logo{font-size:16px}.searchwrap{max-width:none}.searchwrap input{padding:10px 9px}.searchwrap button{padding:0 12px}.topright .hideMobile{display:none}.sidebar{position:fixed;bottom:0;top:auto;height:58px;width:100%;z-index:40;background:var(--panel);border-top:1px solid var(--line);border-right:0;display:flex;justify-content:space-around;padding:4px}.nav{padding:5px;margin:0;display:flex;flex-direction:column;gap:2px;font-size:10px}.nav .ico{font-size:17px}.nav .navtxt{display:block;font-size:9px}.main{padding:12px 10px 75px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}.thumb{height:115px}.cardrow{gap:7px}.avatar{width:30px;height:30px}.ctitle{font-size:13px}.sub{font-size:11px}.videotitle{font-size:17px}.playergrid{gap:8px}#miniPlayer{width:230px;right:8px;bottom:65px}}
+:root{
+  --bg:#f7f7f7;
+  --card:#ffffff;
+  --text:#171717;
+  --muted:#777;
+  --line:#e5e5e5;
+  --accent:#e62117;
+}
+body.dark{
+  --bg:#111;
+  --card:#1d1d1d;
+  --text:#f5f5f5;
+  --muted:#aaa;
+  --line:#333;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial, sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{
+  height:64px;
+  background:var(--card);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:0 18px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo{
+  font-size:24px;
+  font-weight:bold;
+  color:var(--accent);
+  white-space:nowrap;
+}
+.search{
+  flex:1;
+  display:flex;
+  max-width:650px;
+  margin:auto;
+}
+.search input{
+  width:100%;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:22px 0 0 22px;
+  background:var(--bg);
+  color:var(--text);
+}
+.search button{
+  padding:0 20px;
+  border:1px solid var(--line);
+  border-radius:0 22px 22px 0;
+  background:var(--bg);
+  color:var(--text);
+}
+.topbtn{
+  border:0;
+  background:transparent;
+  color:var(--text);
+  font-size:20px;
+}
+.layout{display:flex}
+.sidebar{
+  width:220px;
+  padding:15px 10px;
+  position:fixed;
+  top:64px;
+  bottom:0;
+  overflow:auto;
+  background:var(--bg);
+}
+.sidebar button{
+  width:100%;
+  display:block;
+  text-align:left;
+  padding:13px;
+  border:0;
+  border-radius:9px;
+  color:var(--text);
+  background:transparent;
+}
+.sidebar button:hover{background:var(--line)}
+main{
+  margin-left:220px;
+  width:calc(100% - 220px);
+  padding:22px;
+}
+.categories{
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  margin-bottom:22px;
+}
+.categories button{
+  border:0;
+  padding:9px 16px;
+  border-radius:20px;
+  background:var(--line);
+  color:var(--text);
+  white-space:nowrap;
+}
+.categories button.active{
+  background:var(--text);
+  color:var(--bg);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:22px;
+}
+.video-card{
+  min-width:0;
+  cursor:pointer;
+}
+.thumb{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#222;
+  border-radius:12px;
+  object-fit:cover;
+}
+.video-info{padding:9px 2px}
+.video-info h3{
+  margin:0 0 7px;
+  font-size:16px;
+  line-height:1.4;
+}
+.video-info p{
+  margin:4px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+.primary{
+  background:var(--accent);
+  color:white;
+  border:0;
+  border-radius:22px;
+  padding:10px 18px;
+}
+.secondary{
+  background:var(--line);
+  color:var(--text);
+  border:0;
+  border-radius:22px;
+  padding:10px 16px;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000b;
+  z-index:30;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+.modal-box{
+  background:var(--card);
+  color:var(--text);
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow:auto;
+  padding:22px;
+  border-radius:15px;
+}
+.modal-box h2{margin-top:0}
+.field{margin:14px 0}
+.field label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:bold;
+}
+.field input,.field textarea,.field select{
+  width:100%;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--bg);
+  color:var(--text);
+}
+.field textarea{min-height:80px;resize:vertical}
+#turnstileBox{margin-top:10px;min-height:65px}
+.player{
+  width:100%;
+  max-height:70vh;
+  background:#000;
+  border-radius:12px;
+}
+.player-info{max-width:900px}
+.player-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:14px 0;
+}
+.comment{
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.comment small{color:var(--muted)}
+.empty{color:var(--muted);padding:20px}
+.toast{
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#222;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:25px;
+  z-index:100;
+  display:none;
+  max-width:90%;
+}
+#pageTitle{margin-top:0}
+.hidden{display:none!important}
+footer{
+  padding:25px;
+  color:var(--muted);
+  text-align:center;
+}
+@media(max-width:750px){
+  header{padding:0 10px;gap:8px}
+  .logo{font-size:19px}
+  .sidebar{
+    width:65px;
+    padding:10px 4px;
+  }
+  .sidebar button{
+    text-align:center;
+    font-size:11px;
+    padding:13px 2px;
+  }
+  main{
+    margin-left:65px;
+    width:calc(100% - 65px);
+    padding:12px;
+  }
+  .grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+  .video-info h3{font-size:14px}
+  .search input{min-width:0}
+  .topbtn{font-size:17px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
- <div class="logo" onclick="showHome()"><b>▶</b>AkyTube</div>
- <div class="searchwrap"><input id="q" placeholder="Search videos, channels..." onkeydown="if(event.key==='Enter')searchNow()" oninput="showSuggestions()"><button onclick="searchNow()">🔍</button></div>
- <div class="topright"><button class="iconbtn hideMobile" title="Voice search" onclick="voiceSearch()">🎙️</button><button class="btn red" onclick="openUpload()">＋ <span class="hideMobile">Create</span></button><button class="iconbtn" onclick="toggleProfile()">👤</button></div>
- <div class="profilemenu" id="profileMenu"><button onclick="showPage('channel')">👤 Your channel</button><button onclick="showPage('history')">🕘 History</button><button onclick="showPage('settings')">⚙️ Settings</button><button onclick="toggleTheme()">🌗 Appearance</button></div>
+  <div class="logo" onclick="showPage('home')">▶ AkyTube</div>
+
+  <div class="search">
+    <input id="searchInput" placeholder="Search videos..." onkeydown="if(event.key==='Enter')searchVideos()">
+    <button onclick="searchVideos()">🔍</button>
+  </div>
+
+  <button class="topbtn" onclick="openUpload()" title="Upload">⬆</button>
+  <button class="topbtn" onclick="toggleTheme()" title="Theme">🌙</button>
 </header>
+
 <div class="layout">
+
 <aside class="sidebar">
- <div class="nav active" data-page="home" onclick="showPage('home',this)"><span class="ico">🏠</span><span class="navtxt">Home</span></div>
- <div class="nav" data-page="shorts" onclick="showPage('shorts',this)"><span class="ico">⚡</span><span class="navtxt">Shorts</span></div>
- <div class="nav" data-page="subscriptions" onclick="showPage('subscriptions',this)"><span class="ico">📺</span><span class="navtxt">Subscriptions</span></div>
- <div class="navtitle">YOU</div>
- <div class="nav" data-page="history" onclick="showPage('history',this)"><span class="ico">🕘</span><span class="navtxt">History</span></div>
- <div class="nav" data-page="playlists" onclick="showPage('playlists',this)"><span class="ico">📂</span><span class="navtxt">Playlists</span></div>
- <div class="nav" data-page="saved" onclick="showPage('saved',this)"><span class="ico">⏰</span><span class="navtxt">Watch Later</span></div>
- <div class="nav" data-page="liked" onclick="showPage('liked',this)"><span class="ico">👍</span><span class="navtxt">Liked videos</span></div>
- <div class="nav" data-page="yourvideos" onclick="showPage('yourvideos',this)"><span class="ico">🎬</span><span class="navtxt">Your videos</span></div>
- <div class="nav" data-page="trending" onclick="showPage('trending',this)"><span class="ico">🔥</span><span class="navtxt">Trending</span></div>
- <div class="nav" data-page="settings" onclick="showPage('settings',this)"><span class="ico">⚙️</span><span class="navtxt">Settings</span></div>
+  <button onclick="showPage('home')">🏠 Home</button>
+  <button onclick="showPage('shorts')">🎬 Shorts</button>
+  <button onclick="showPage('subscriptions')">📺 Subscriptions</button>
+  <hr>
+  <button onclick="showPage('history')">🕘 History</button>
+  <button onclick="showPage('watchlater')">⏱ Watch Later</button>
+  <button onclick="showPage('playlists')">📂 Playlists</button>
+  <button onclick="showPage('yourvideos')">📹 Your Videos</button>
+  <hr>
+  <button onclick="showPage('settings')">⚙ Settings</button>
 </aside>
-<main class="main">
- <section id="homeView">
-  <div class="chips" id="chips">
-   <button class="chip active" onclick="setCategory('All',this)">All</button><button class="chip" onclick="setCategory('Music',this)">Music</button><button class="chip" onclick="setCategory('Gaming',this)">Gaming</button><button class="chip" onclick="setCategory('Tech',this)">Technology</button><button class="chip" onclick="setCategory('Education',this)">Education</button><button class="chip" onclick="setCategory('News',this)">News</button><button class="chip" onclick="setCategory('Live',this)">Live</button><button class="chip" onclick="setCategory('Sports',this)">Sports</button>
-  </div>
-  <h2 id="pageTitle" style="margin:0 0 18px">Recommended videos</h2><div class="grid" id="videoGrid"></div>
- </section>
- <section id="playerView">
-  <button class="btn" onclick="showHome()">← Back</button>
-  <div class="playergrid" style="margin-top:14px">
-   <div class="videoarea">
-    <video id="vid" controls playsinline></video>
-    <h2 class="videotitle" id="pTitle"></h2>
-    <div class="channelrow"><div class="avatar" id="pAvatar">A</div><div class="channelinfo"><b id="pChan"></b><div class="sub" id="pSubs">AkyTube creator</div></div><button class="pill red" id="subBtn" onclick="doSub()">Subscribe</button>
-     <div class="actions"><button class="pill" id="likeBtn" onclick="doLike()">👍 Like</button><button class="pill" id="dislikeBtn" onclick="doDislike()">👎</button><button class="pill" onclick="openShare()">↗ Share</button><button class="pill" onclick="doSave()">⏰ Save</button><button class="pill" onclick="addToPlaylist()">＋ Playlist</button><button class="pill" onclick="toggleMini()">▣ Mini player</button><button class="pill" onclick="toggleTheater()">▭ Theater</button></div>
-    </div>
-    <div class="description" id="description"></div>
-    <h3 class="sectiontitle">Comments <span id="commentCount" class="sub"></span></h3>
-    <div class="commentbox"><div class="avatar">A</div><input id="cText" placeholder="Add a comment..."><button class="btn red" onclick="addComment()">Comment</button></div>
-    <div style="display:flex;gap:10px;align-items:center"><button class="pill" onclick="sortComments()">↕ Sort: <span id="sortLabel">Newest</span></button></div><div id="comments"></div>
-   </div>
-   <aside class="recommend"><h3 style="margin-top:0">Up next</h3><div id="recommendations"></div></aside>
-  </div>
- </section>
- <section id="shortsView" style="display:none"><h2>Shorts</h2><div class="shortsgrid" id="shortsGrid"></div></section>
- <section id="otherView" style="display:none"><h2 id="otherTitle"></h2><div id="otherContent"></div></section>
+
+<main>
+  <div class="categories" id="categories"></div>
+  <h2 id="pageTitle">Home</h2>
+  <div id="content"></div>
 </main>
+
 </div>
-<div class="modal" id="uploadModal"><div class="modalbox"><div class="modalhead"><h2>Upload video</h2><button class="iconbtn" onclick="closeModal('uploadModal')">✕</button></div>
- <div class="field"><label>Video title *</label><input id="fTitle" placeholder="Enter video title"></div><div class="field"><label>Channel name</label><input id="fChan" value="Ashok Kumar Yadaw"></div><div class="field"><label>Category</label><select id="fCat"><option>My Channel</option><option>Music</option><option>Gaming</option><option>Tech</option><option>Education</option><option>News</option><option>Sports</option><option>Live</option></select></div><div class="field"><label>Description</label><textarea id="fDesc" placeholder="Tell viewers about your video"></textarea></div><div class="field"><label>Choose video file</label><input type="file" id="fFile" accept="video/*"></div><div class="field"><label>Or direct MP4 URL</label><input id="fUrl" type="url" placeholder="https://example.com/video.mp4"></div><div class="field"><label>Thumbnail URL (optional)</label><input id="fThumb" type="url" placeholder="https://example.com/thumbnail.jpg"></div><button class="btn red" style="width:100%" onclick="uploadVideo()">Publish video</button><p class="sub">Local uploads stay in this browser only. For public uploads, a server/API is required.</p></div></div>
-<div class="modal" id="shareModal"><div class="modalbox"><div class="modalhead"><h2>Share</h2><button class="iconbtn" onclick="closeModal('shareModal')">✕</button></div><div class="field"><input id="shareUrl" readonly></div><button class="btn red" onclick="copyShare()">Copy link</button></div></div>
-<div class="modal" id="playlistModal"><div class="modalbox"><div class="modalhead"><h2>Add to playlist</h2><button class="iconbtn" onclick="closeModal('playlistModal')">✕</button></div><div id="playlistChoices"></div><div class="field"><input id="newPlaylist" placeholder="New playlist name"></div><button class="btn red" onclick="createPlaylist()">Create playlist</button></div></div>
-<div class="modal" id="settingsModal"><div class="modalbox"><div class="modalhead"><h2>Settings</h2><button class="iconbtn" onclick="closeModal('settingsModal')">✕</button></div><p>Appearance</p><button class="btn" onclick="toggleTheme()">Toggle light / dark theme</button><p>Playback</p><label><input type="checkbox" id="autoplay" onchange="localStorage.setItem('aky_autoplay',this.checked)"> Autoplay next video</label><p class="sub">This demo stores preferences on this device.</p></div></div>
-<div id="miniPlayer"><div class="minihead"><b id="miniTitle">Now playing</b><button class="iconbtn" onclick="closeMini()">✕</button></div><video id="miniVid" controls></video></div><div class="toast" id="toast"></div>
+
+<!-- Upload Modal -->
+<div class="modal" id="uploadModal">
+  <div class="modal-box">
+    <h2>Upload Video</h2>
+
+    <div class="field">
+      <label>Video Title *</label>
+      <input id="fTitle" maxlength="100" placeholder="Enter video title">
+    </div>
+
+    <div class="field">
+      <label>Choose MP4 Video *</label>
+      <input type="file" id="fFile" accept=".mp4,video/mp4">
+      <small>Maximum 8 MB | Maximum 60 seconds | MP4 only</small>
+    </div>
+
+    <div class="field">
+      <label>Channel Name</label>
+      <input id="fChan" value="Ashok Kumar Yadaw">
+    </div>
+
+    <div class="field">
+      <label>Category</label>
+      <select id="fCat">
+        <option>Entertainment</option>
+        <option>Education</option>
+        <option>Music</option>
+        <option>News</option>
+        <option>Technology</option>
+        <option>Gaming</option>
+        <option>Sports</option>
+        <option>Shorts</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea id="fDesc" maxlength="2000" placeholder="Video description"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Thumbnail Image URL (Optional)</label>
+      <input id="fThumb" placeholder="https://example.com/image.jpg">
+    </div>
+
+    <div class="field">
+      <label>Security Verification</label>
+      <div id="turnstileBox"></div>
+    </div>
+
+    <button class="primary" id="publishBtn" onclick="uploadVideo()">Publish Video</button>
+    <button class="secondary" onclick="closeModal('uploadModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Player Modal -->
+<div class="modal" id="playerModal">
+  <div class="modal-box" style="max-width:950px">
+    <button class="secondary" onclick="closeModal('playerModal')">✕ Close</button>
+    <video id="mainPlayer" class="player" controls playsinline></video>
+    <div class="player-info">
+      <h2 id="playerTitle"></h2>
+      <p id="playerChannel"></p>
+      <div class="player-actions">
+        <button class="secondary" id="likeBtn" onclick="toggleLike()">👍 Like</button>
+        <button class="secondary" onclick="toggleDislike()">👎 Dislike</button>
+        <button class="secondary" onclick="subscribeChannel()">Subscribe</button>
+        <button class="secondary" onclick="saveWatchLater()">⏱ Watch Later</button>
+        <button class="secondary" onclick="shareVideo()">↗ Share</button>
+      </div>
+      <p id="playerDescription"></p>
+      <hr>
+      <h3>Comments</h3>
+      <div class="field">
+        <input id="commentInput" placeholder="Write a comment...">
+        <button class="primary" onclick="addComment()">Comment</button>
+      </div>
+      <div id="commentsList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  AkyTube · Video Sharing Platform
+  <br>Designed by Ashok Kumar Yadaw
+</footer>
+
 <script>
-const FALLBACK='https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=700';
-const samples=[
-{id:'s1',title:'Big Buck Bunny — Full HD Demo',channel:'AkyTube Official',category:'Tech',url:'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',thumb:'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg',views:1240,likes:85,description:'A sample video to test the AkyTube video player. Enjoy watching!'},
-{id:'s2',title:'Elephants Dream — Sci-Fi Short Film',channel:'My Channel',category:'Education',url:'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',thumb:FALLBACK,views:890,likes:64,description:'An open movie sample video.'},
-{id:'s3',title:'For Bigger Escapes — Video Demo',channel:'AkyTube Studio',category:'Music',url:'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',thumb:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=700',views:520,likes:31,description:'Demo video for playback testing.'},
-{id:'s4',title:'For Bigger Fun — Sample Clip',channel:'AkyTube Studio',category:'Gaming',url:'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',thumb:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700',views:2300,likes:120,description:'A sample entertainment video.'}
+"use strict";
+
+/* ================= CONFIGURATION ================= */
+
+const UPLOAD_API =
+  "https://akytube.ashokyadawji.workers.dev";
+
+const TURNSTILE_SITE_KEY =
+  "0x4AAAAAAGNFRaEkymrkl9UQ";
+
+const VIDEO_MANIFEST =
+  "https://raw.githubusercontent.com/Ashok-Kumar-Yadaw/akytube/main/videos.json";
+
+const FALLBACK =
+  "https://placehold.co/640x360/222/fff?text=AkyTube";
+
+/* ================= APPLICATION DATA ================= */
+
+let videos = [];
+let current = null;
+let currentPage = "home";
+let activeCategory = "All";
+
+let turnstileWidgetId = null;
+let turnstileToken = "";
+
+let likes = JSON.parse(localStorage.getItem("aky_likes") || "[]");
+let dislikes = JSON.parse(localStorage.getItem("aky_dislikes") || "[]");
+let subscriptions = JSON.parse(localStorage.getItem("aky_subs") || "[]");
+let watchLater = JSON.parse(localStorage.getItem("aky_watchlater") || "[]");
+let history = JSON.parse(localStorage.getItem("aky_history") || "[]");
+let uploads = JSON.parse(localStorage.getItem("aky_uploads") || "[]");
+let playlists = JSON.parse(localStorage.getItem("aky_playlists") || "{}");
+let comments = JSON.parse(localStorage.getItem("aky_comments") || "{}");
+
+function persist(){
+  localStorage.setItem("aky_likes",JSON.stringify(likes));
+  localStorage.setItem("aky_dislikes",JSON.stringify(dislikes));
+  localStorage.setItem("aky_subs",JSON.stringify(subscriptions));
+  localStorage.setItem("aky_watchlater",JSON.stringify(watchLater));
+  localStorage.setItem("aky_history",JSON.stringify(history));
+  localStorage.setItem("aky_uploads",JSON.stringify(uploads));
+  localStorage.setItem("aky_playlists",JSON.stringify(playlists));
+  localStorage.setItem("aky_comments",JSON.stringify(comments));
+}
+
+function safe(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+function toast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.style.display="block";
+  clearTimeout(window.akyToastTimer);
+  window.akyToastTimer=setTimeout(()=>el.style.display="none",3000);
+}
+
+function closeModal(id){
+  document.getElementById(id).style.display="none";
+}
+
+/* ================= TURNSTILE ================= */
+
+function setupTurnstile(){
+  if(turnstileWidgetId !== null) return;
+
+  if(!window.turnstile){
+    setTimeout(setupTurnstile,500);
+    return;
+  }
+
+  turnstileWidgetId=window.turnstile.render("#turnstileBox",{
+    sitekey:TURNSTILE_SITE_KEY,
+    theme:document.body.classList.contains("dark")?"dark":"light",
+
+    callback:function(token){
+      turnstileToken=token;
+    },
+
+    "expired-callback":function(){
+      turnstileToken="";
+      toast("CAPTCHA expired. Please verify again.");
+    },
+
+    "error-callback":function(){
+      turnstileToken="";
+      toast("CAPTCHA verification error");
+    }
+  });
+}
+
+function openUpload(){
+  document.getElementById("uploadModal").style.display="flex";
+  setupTurnstile();
+}
+
+/* ================= VIDEO UPLOAD ================= */
+
+async function getVideoDuration(file){
+  const url=URL.createObjectURL(file);
+
+  try{
+    const duration=await new Promise((resolve,reject)=>{
+      const video=document.createElement("video");
+      video.preload="metadata";
+
+      video.onloadedmetadata=()=>resolve(video.duration);
+      video.onerror=()=>reject(new Error("Invalid video file"));
+
+      video.src=url;
+    });
+
+    return duration;
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+
+async function uploadVideo(){
+  const btn=document.getElementById("publishBtn");
+  const title=document.getElementById("fTitle").value.trim();
+  const file=document.getElementById("fFile").files[0];
+
+  if(!title){
+    toast("Please enter video title");
+    return;
+  }
+
+  if(!file){
+    toast("Please select an MP4 video");
+    return;
+  }
+
+  if(!file.name.toLowerCase().endsWith(".mp4") ||
+     (file.type && file.type!=="video/mp4")){
+    toast("Only MP4 videos are allowed");
+    return;
+  }
+
+  if(file.size>8*1024*1024){
+    toast("Maximum file size is 8 MB");
+    return;
+  }
+
+  if(!turnstileToken){
+    toast("Please complete CAPTCHA verification");
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent="Checking video...";
+
+  try{
+    const duration=await getVideoDuration(file);
+
+    if(duration>60){
+      throw new Error("Maximum video duration is 60 seconds");
+    }
+
+    const formData=new FormData();
+
+    formData.append("file",file);
+    formData.append("title",title);
+    formData.append("channel",
+      document.getElementById("fChan").value.trim() ||
+      "Ashok Kumar Yadaw"
+    );
+    formData.append("category",document.getElementById("fCat").value);
+    formData.append("description",document.getElementById("fDesc").value);
+    formData.append("thumb",document.getElementById("fThumb").value.trim());
+    formData.append("turnstileToken",turnstileToken);
+
+    btn.textContent="Uploading...";
+
+    const response=await fetch(UPLOAD_API,{
+      method:"POST",
+      body:formData
+    });
+
+    let result;
+
+    try{
+      result=await response.json();
+    }catch{
+      throw new Error("Worker returned an invalid response");
+    }
+
+    if(!response.ok || result.success!==true){
+      throw new Error(result.error || "Upload failed");
+    }
+
+    const uploaded=result.video || result.data || result;
+
+    const videoUrl=
+      uploaded.url ||
+      uploaded.videoUrl ||
+      uploaded.rawUrl ||
+      uploaded.download_url;
+
+    if(!videoUrl){
+      throw new Error("Worker response does not contain video URL");
+    }
+
+    const newVideo={
+      id:String(uploaded.id || ("u"+Date.now())),
+      title:uploaded.title || title,
+      channel:uploaded.channel ||
+        document.getElementById("fChan").value.trim() ||
+        "Ashok Kumar Yadaw",
+      category:uploaded.category || document.getElementById("fCat").value,
+      url:videoUrl,
+      thumb:uploaded.thumb ||
+        document.getElementById("fThumb").value.trim() ||
+        FALLBACK,
+      description:uploaded.description ||
+        document.getElementById("fDesc").value,
+      views:0
+    };
+
+    videos.unshift(newVideo);
+
+    uploads.push(newVideo.id);
+    persist();
+
+    document.getElementById("fTitle").value="";
+    document.getElementById("fFile").value="";
+    document.getElementById("fDesc").value="";
+    document.getElementById("fThumb").value="";
+
+    turnstileToken="";
+
+    if(window.turnstile && turnstileWidgetId!==null){
+      window.turnstile.reset(turnstileWidgetId);
+    }
+
+    closeModal("uploadModal");
+    showPage("yourvideos");
+    toast("Video successfully published!");
+
+  }catch(error){
+    console.error(error);
+    toast(error.message || "Upload failed");
+
+    turnstileToken="";
+
+    if(window.turnstile && turnstileWidgetId!==null){
+      window.turnstile.reset(turnstileWidgetId);
+    }
+
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Publish Video";
+  }
+}
+
+/* ================= LOAD PUBLIC VIDEOS ================= */
+
+async function loadPublicVideos(){
+  try{
+    const response=await fetch(VIDEO_MANIFEST,{
+      cache:"no-store"
+    });
+
+    if(!response.ok) return;
+
+    const data=await response.json();
+
+    const list=Array.isArray(data)
+      ? data
+      : (Array.isArray(data.videos)?data.videos:[]);
+
+    const remote=list.map(item=>({
+      id:String(item.id || item.path || item.url || Math.random()),
+      title:item.title || "Untitled Video",
+      channel:item.channel || "AkyTube Creator",
+      category:item.category || "Other",
+      url:item.url || item.videoUrl || item.rawUrl || item.download_url || "",
+      thumb:item.thumb || item.thumbnail || FALLBACK,
+      description:item.description || "",
+      views:item.views || 0
+    })).filter(v=>v.url);
+
+    const localIds=new Set(videos.map(v=>String(v.id)));
+
+    remote.forEach(v=>{
+      if(!localIds.has(String(v.id))){
+        videos.push(v);
+      }
+    });
+
+    renderPage();
+  }catch(error){
+    console.warn("Public video manifest could not be loaded",error);
+  }
+}
+
+/* ================= CATEGORIES ================= */
+
+const categoryNames=[
+  "All","Entertainment","Education","Music","News",
+  "Technology","Gaming","Sports","Shorts","Other"
 ];
-function read(k,d){try{let x=JSON.parse(localStorage.getItem(k));return x===null?d:x}catch(e){return d}}
-let videos=read('aky_videos_v5',samples),likes=read('aky_likes_v5',[]),dislikes=read('aky_dislikes_v5',[]),saved=read('aky_saved_v5',[]),subs=read('aky_subs_v5',[]),history=read('aky_history_v5',[]),comments=read('aky_comments_v5',{}),playlists=read('aky_playlists_v5',{'Favorites':[]}),uploads=read('aky_uploads_v5',[]),current=null,category='All',page='home',commentSort='new';
-function persist(){for(const [k,v] of Object.entries({aky_videos_v5:videos,aky_likes_v5:likes,aky_dislikes_v5:dislikes,aky_saved_v5:saved,aky_subs_v5:subs,aky_history_v5:history,aky_comments_v5:comments,aky_playlists_v5:playlists,aky_uploads_v5:uploads}))localStorage.setItem(k,JSON.stringify(v))}
-function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2300)}
-function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function find(id){return videos.find(v=>v.id===id)}
-function card(v){return `<article class="card" onclick="playVideo('${v.id}')"><div class="thumb"><img src="${safe(v.thumb||FALLBACK)}" onerror="this.src='${FALLBACK}'"><span class="duration">${v.duration||'Video'}</span></div><div class="cardrow"><div class="avatar">${safe((v.channel||'A')[0].toUpperCase())}</div><div style="min-width:0"><div class="ctitle">${safe(v.title)}</div><div class="sub">${safe(v.channel)}<br>${Number(v.views||0).toLocaleString()} views • ${v.category||'Video'}</div></div><button class="dots" onclick="event.stopPropagation();videoMenu('${v.id}')">⋮</button></div></article>`}
-function renderGrid(arr){let g=document.getElementById('videoGrid');g.innerHTML=arr.length?arr.map(card).join(''):'<div class="empty">No videos found. Upload a video or change your search.</div>'}
-function showHome(){showPage('home')}
-function showPage(p,el){page=p;document.getElementById('homeView').style.display='none';document.getElementById('playerView').style.display='none';document.getElementById('shortsView').style.display='none';document.getElementById('otherView').style.display='none';document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===p));if(p==='home'||p==='trending'||p==='liked'||p==='saved'||p==='history'||p==='subscriptions'||p==='yourvideos'){document.getElementById('homeView').style.display='block';let title={home:'Recommended videos',trending:'Trending',liked:'Liked videos',saved:'Watch Later',history:'Watch history',subscriptions:'Subscriptions',yourvideos:'Your videos'}[p];document.getElementById('pageTitle').textContent=title;document.getElementById('chips').style.display=p==='home'?'flex':'none';let arr=videos.slice();if(p==='trending')arr.sort((a,b)=>(b.views||0)-(a.views||0));if(p==='liked')arr=arr.filter(v=>likes.includes(v.id));if(p==='saved')arr=arr.filter(v=>saved.includes(v.id));if(p==='history')arr=history.map(find).filter(Boolean).reverse();if(p==='subscriptions')arr=arr.filter(v=>subs.includes(v.channel));if(p==='yourvideos')arr=arr.filter(v=>uploads.includes(v.id));if(p==='home'&&category!=='All')arr=arr.filter(v=>v.category===category);renderGrid(arr)}else if(p==='shorts'){document.getElementById('shortsView').style.display='block';document.getElementById('shortsGrid').innerHTML=videos.slice(0,8).map(v=>`<div class="shortcard" onclick="playVideo('${v.id}')"><img src="${safe(v.thumb||FALLBACK)}"><span>${safe(v.title)}<br><small>▶ Watch</small></span></div>`).join('')||'<div class="empty">No shorts available</div>'}else{document.getElementById('otherView').style.display='block';renderOther(p)}window.scrollTo(0,0)}
-function setCategory(c,b){category=c;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');showPage('home')}
-function searchNow(){let q=document.getElementById('q').value.trim().toLowerCase();showPage('home');document.getElementById('pageTitle').textContent=q?'Search results for: '+q:'Recommended videos';renderGrid(videos.filter(v=>(v.title+' '+v.channel+' '+v.category).toLowerCase().includes(q)))}
-function showSuggestions(){/* Search suggestions intentionally kept lightweight for offline use. */}
-function playVideo(id){let v=find(id);if(!v)return;current=id;v.views=(v.views||0)+1;history=history.filter(x=>x!==id);history.push(id);persist();document.getElementById('homeView').style.display='none';document.getElementById('shortsView').style.display='none';document.getElementById('otherView').style.display='none';document.getElementById('playerView').style.display='block';let player=document.getElementById('vid');player.src=v.url;player.load();document.getElementById('pTitle').textContent=v.title;document.getElementById('pChan').textContent=v.channel;document.getElementById('pAvatar').textContent=(v.channel||'A')[0].toUpperCase();document.getElementById('pSubs').textContent='AkyTube channel';document.getElementById('description').textContent=(v.description||'No description available.')+'\n\n'+(v.views||0).toLocaleString()+' views';updateButtons();drawComments();document.getElementById('recommendations').innerHTML=videos.filter(x=>x.id!==id).map(v=>`<div class="mini" onclick="playVideo('${v.id}')"><img src="${safe(v.thumb||FALLBACK)}"><div><div class="ctitle">${safe(v.title)}</div><div class="sub">${safe(v.channel)}<br>${v.views||0} views</div></div></div>`).join('');window.scrollTo(0,0);if(document.getElementById('autoplay').checked){}}
-function updateButtons(){let v=find(current);if(!v)return;document.getElementById('likeBtn').textContent=(likes.includes(v.id)?'👍 Liked':'👍 Like')+' · '+(v.likes||0);document.getElementById('likeBtn').classList.toggle('active',likes.includes(v.id));document.getElementById('dislikeBtn').classList.toggle('active',dislikes.includes(v.id));document.getElementById('subBtn').textContent=subs.includes(v.channel)?'Subscribed':'Subscribe';document.getElementById('subBtn').classList.toggle('red',!subs.includes(v.channel))}
-function doLike(){let v=find(current);if(!v)return;if(likes.includes(current)){likes=likes.filter(x=>x!==current);v.likes=Math.max(0,(v.likes||0)-1)}else{likes.push(current);dislikes=dislikes.filter(x=>x!==current);v.likes=(v.likes||0)+1}persist();updateButtons()}
-function doDislike(){if(!current)return;if(dislikes.includes(current))dislikes=dislikes.filter(x=>x!==current);else{dislikes.push(current);likes=likes.filter(x=>x!==current)}persist();updateButtons();toast('Your feedback was saved')}
-function doSub(){let v=find(current);if(!v)return;if(subs.includes(v.channel))subs=subs.filter(x=>x!==v.channel);else subs.push(v.channel);persist();updateButtons();toast(subs.includes(v.channel)?'Subscribed':'Unsubscribed')}
-function doSave(){if(!current)return;if(saved.includes(current))saved=saved.filter(x=>x!==current);else saved.push(current);persist();toast(saved.includes(current)?'Added to Watch Later':'Removed from Watch Later')}
-function addComment(){let t=document.getElementById('cText').value.trim();if(!t||!current)return;(comments[current]??=[]).push({text:t,date:new Date().toLocaleString(),author:'You'});document.getElementById('cText').value='';persist();drawComments()}
-function drawComments(){let a=comments[current]||[];let list=commentSort==='new'?a.slice().reverse():a.slice();document.getElementById('commentCount').textContent='('+a.length+')';document.getElementById('sortLabel').textContent=commentSort==='new'?'Newest':'Oldest';document.getElementById('comments').innerHTML=list.length?list.map(c=>`<div class="comment"><div class="avatar">${safe((c.author||'Y')[0])}</div><div class="commenttext"><div class="commentmeta"><b>${safe(c.author||'Viewer')}</b> · ${safe(c.date||'')}</div>${safe(c.text)}</div></div>`).join(''):'<p class="sub">No comments yet. Be the first to comment.</p>'}
-function sortComments(){commentSort=commentSort==='new'?'old':'new';drawComments()}
-function openUpload(){document.getElementById('uploadModal').style.display='flex'}
-function closeModal(id){document.getElementById(id).style.display='none'}
-function uploadVideo(){let title=document.getElementById('fTitle').value.trim(),file=document.getElementById('fFile').files[0],url=document.getElementById('fUrl').value.trim();if(!title||(!file&&!url)){toast('Title and a video file or URL are required');return}if(file&&file.size>25*1024*1024){toast('Demo file limit is 25 MB');return}if(file&&file.type&&!file.type.startsWith('video/')){toast('Please choose a video file');return}let videoUrl=url;if(file)videoUrl=URL.createObjectURL(file);let v={id:'u'+Date.now(),title,channel:document.getElementById('fChan').value.trim()||'My Channel',category:document.getElementById('fCat').value,url:videoUrl,thumb:document.getElementById('fThumb').value.trim()||FALLBACK,description:document.getElementById('fDesc').value,views:0,likes:0,localFile:!!file};videos.unshift(v);uploads.push(v.id);persist();closeModal('uploadModal');['fTitle','fDesc','fUrl','fThumb','fFile'].forEach(id=>document.getElementById(id).value='');showPage('yourvideos');toast('Video added to this browser')}
-function openShare(){let v=find(current);if(!v)return;document.getElementById('shareUrl').value=location.href.split('#')[0]+'#video='+encodeURIComponent(v.id);document.getElementById('shareModal').style.display='flex'}
-function copyShare(){let x=document.getElementById('shareUrl');x.select();navigator.clipboard?.writeText(x.value).then(()=>toast('Link copied')).catch(()=>toast('Select and copy the link'));closeModal('shareModal')}
-function addToPlaylist(){if(!current)return;let p=document.getElementById('playlistChoices');p.innerHTML=Object.keys(playlists).map(n=>`<p><label><input type="checkbox" ${playlists[n].includes(current)?'checked':''} onchange="playlistToggle('${safe(n)}',this.checked)"> ${safe(n)}</label></p>`).join('');document.getElementById('playlistModal').style.display='flex'}
-function playlistToggle(n,on){if(!playlists[n])playlists[n]=[];if(on&&!playlists[n].includes(current))playlists[n].push(current);if(!on)playlists[n]=playlists[n].filter(x=>x!==current);persist()}
-function createPlaylist(){let n=document.getElementById('newPlaylist').value.trim();if(!n)return;playlists[n]=[current];persist();document.getElementById('newPlaylist').value='';closeModal('playlistModal');toast('Playlist created')}
-function renderOther(p){let t={playlists:'Your playlists',channel:'Your channel',settings:'Settings',live:'Live'}[p]||p;document.getElementById('otherTitle').textContent=t;let box=document.getElementById('otherContent');if(p==='playlists'){box.innerHTML=Object.entries(playlists).map(([n,ids])=>`<div class="description"><b>${safe(n)}</b> · ${ids.length} videos <button class="btn" onclick="openPlaylist('${safe(n)}')">Open</button></div>`).join('')+'<button class="btn red" onclick="newPlaylistPrompt()">＋ New playlist</button>'}else if(p==='channel'){box.innerHTML=`<div class="description"><h2>Ashok Kumar Yadaw</h2><p>Welcome to your AkyTube channel.</p><p>${uploads.length} uploaded videos · ${subs.length} subscriptions</p><button class="btn red" onclick="openUpload()">Upload video</button></div>`}else if(p==='settings'){box.innerHTML=`<div class="description"><h3>Playback and appearance</h3><p><label><input type="checkbox" id="auto2" ${localStorage.getItem('aky_autoplay')==='true'?'checked':''} onchange="localStorage.setItem('aky_autoplay',this.checked)"> Autoplay</label></p><button class="btn" onclick="toggleTheme()">Toggle light / dark mode</button><p><button class="btn" onclick="clearHistory()">Clear watch history</button></p><p><button class="btn" onclick="resetDemo()">Reset demo data</button></p><p class="sub">AkyTube is a front-end demo. Sign-in, public uploads, synced likes/comments, live streaming, monetization and recommendations need a secure backend.</p></div>`}else box.innerHTML='<div class="empty">This section is not connected in the demo.</div>'}
-function openPlaylist(n){let ids=playlists[n]||[];document.getElementById('otherContent').innerHTML=`<button class="btn" onclick="showPage('playlists')">← Playlists</button><div class="grid" style="margin-top:18px">${ids.map(find).filter(Boolean).map(card).join('')||'<div class="empty">This playlist is empty.</div>'}</div>`;document.getElementById('otherTitle').textContent=n}
-function newPlaylistPrompt(){let n=prompt('Playlist name?');if(n&&n.trim()){playlists[n.trim()]=[];persist();renderOther('playlists')}}
-function videoMenu(id){let a=prompt('Type: save, playlist, delete');if(a==='save'){if(!saved.includes(id))saved.push(id);persist();toast('Saved to Watch Later')}else if(a==='delete'){if(confirm('Delete this video from this browser?')){videos=videos.filter(v=>v.id!==id);persist();showPage(page)}}else if(a==='playlist'){current=id;addToPlaylist()}}
-function toggleTheme(){document.body.classList.toggle('light');localStorage.setItem('aky_theme',document.body.classList.contains('light')?'light':'dark')}
-function toggleProfile(){let m=document.getElementById('profileMenu');m.style.display=m.style.display==='block'?'none':'block'}
-function toggleMini(){let v=find(current);if(!v)return;let m=document.getElementById('miniPlayer'),mv=document.getElementById('miniVid'),main=document.getElementById('vid');m.style.display='block';document.getElementById('miniTitle').textContent=v.title;mv.src=v.url;mv.currentTime=main.currentTime;mv.play().catch(()=>{});main.pause()}
-function closeMini(){document.getElementById('miniVid').pause();document.getElementById('miniPlayer').style.display='none'}
-function toggleTheater(){document.getElementById('playerView').classList.toggle('theater');document.querySelector('.playergrid').style.gridTemplateColumns=document.getElementById('playerView').classList.contains('theater')?'1fr':'minmax(0,1fr) 390px'}
-function voiceSearch(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){toast('Voice search is not supported by this browser');return}let r=new R();r.lang='hi-IN';r.onresult=e=>{document.getElementById('q').value=e.results[0][0].transcript;searchNow()};r.start()}
-function clearHistory(){if(confirm('Clear watch history?')){history=[];persist();showPage('history')}}
-function resetDemo(){if(confirm('Reset all AkyTube demo data stored in this browser?')){Object.keys(localStorage).filter(k=>k.startsWith('aky_')).forEach(k=>localStorage.removeItem(k));location.reload()}}
-function toggleAutoplay(){let x=document.getElementById('autoplay');localStorage.setItem('aky_autoplay',x.checked)}
-function nextVideo(){let i=videos.findIndex(v=>v.id===current);if(i>=0&&videos[i+1])playVideo(videos[i+1].id)}
-document.getElementById('vid').addEventListener('ended',()=>{if(localStorage.getItem('aky_autoplay')==='true')nextVideo()});
-document.getElementById('vid').addEventListener('timeupdate',()=>{let m=document.getElementById('miniVid');if(document.getElementById('miniPlayer').style.display==='block'&&Math.abs(m.currentTime-document.getElementById('vid').currentTime)>2)m.currentTime=document.getElementById('vid').currentTime});
-document.addEventListener('click',e=>{if(!e.target.closest('.topright')&&!e.target.closest('.profilemenu'))document.getElementById('profileMenu').style.display='none'});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal').forEach(m=>m.style.display='none');if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();document.getElementById('q').focus()}});
-if(localStorage.getItem('aky_theme')==='light')document.body.classList.add('light');
-document.getElementById('autoplay').checked=localStorage.getItem('aky_autoplay')==='true';
-let hash=new URLSearchParams(location.hash.slice(1));let shared=hash.get('video');if(shared&&find(shared))playVideo(shared);else showPage('home');
+
+function renderCategories(){
+  const el=document.getElementById("categories");
+
+  el.innerHTML=categoryNames.map(c=>`
+    <button class="${activeCategory===c?"active":""}"
+      onclick="setCategory('${safe(c)}')">${safe(c)}</button>
+  `).join("");
+}
+
+function setCategory(category){
+  activeCategory=category;
+  renderCategories();
+  showPage("home");
+}
+
+/* ================= VIDEO CARDS ================= */
+
+function videoCard(v){
+  return `
+    <div class="video-card" onclick="playVideo('${safe(v.id)}')">
+      <img class="thumb"
+        src="${safe(v.thumb || FALLBACK)}"
+        alt="${safe(v.title)}"
+        onerror="this.src='${FALLBACK}'">
+
+      <div class="video-info">
+        <h3>${safe(v.title)}</h3>
+        <p>${safe(v.channel)}</p>
+        <p>${Number(v.views||0).toLocaleString()} views</p>
+        <p>${safe(v.category || "Other")}</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderGrid(list){
+  const el=document.getElementById("content");
+
+  if(!list.length){
+    el.innerHTML='<div class="empty">No videos found.</div>';
+    return;
+  }
+
+  el.innerHTML='<div class="grid">'+list.map(videoCard).join("")+'</div>';
+}
+
+/* ================= PAGE NAVIGATION ================= */
+
+function showPage(page){
+  currentPage=page;
+  activeCategory="All";
+  renderCategories();
+  renderPage();
+}
+
+function renderPage(){
+  const title=document.getElementById("pageTitle");
+  const el=document.getElementById("content");
+
+  let list=[...videos];
+
+  if(currentPage==="home"){
+    title.textContent="Home";
+    if(activeCategory!=="All"){
+      list=list.filter(v=>v.category===activeCategory);
+    }
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="shorts"){
+    title.textContent="Shorts";
+    list=list.filter(v=>
+      v.category==="Shorts" ||
+      v.category==="Entertainment"
+    );
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="subscriptions"){
+    title.textContent="Subscriptions";
+    list=list.filter(v=>subscriptions.includes(v.channel));
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="history"){
+    title.textContent="Watch History";
+    list=history.map(id=>videos.find(v=>String(v.id)===String(id))).filter(Boolean);
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="watchlater"){
+    title.textContent="Watch Later";
+    list=watchLater.map(id=>videos.find(v=>String(v.id)===String(id))).filter(Boolean);
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="yourvideos"){
+    title.textContent="Your Videos";
+    list=uploads.map(id=>videos.find(v=>String(v.id)===String(id))).filter(Boolean);
+    renderGrid(list);
+    return;
+  }
+
+  if(currentPage==="playlists"){
+    title.textContent="Playlists";
+
+    let html=`
+      <div class="field">
+        <input id="newPlaylist" placeholder="New playlist name">
+        <button class="primary" onclick="createPlaylist()">Create Playlist</button>
+      </div>
+    `;
+
+    Object.keys(playlists).forEach(name=>{
+      const items=(playlists[name]||[])
+        .map(id=>videos.find(v=>String(v.id)===String(id)))
+        .filter(Boolean);
+
+      html+=`
+        <h3>${safe(name)}</h3>
+        ${items.length
+          ? '<div class="grid">'+items.map(videoCard).join("")+'</div>'
+          : '<p class="empty">This playlist is empty.</p>'}
+      `;
+    });
+
+    el.innerHTML=html;
+    return;
+  }
+
+  if(currentPage==="settings"){
+    title.textContent="Settings";
+    el.innerHTML=`
+      <h3>AkyTube Settings</h3>
+      <p>Theme: ${document.body.classList.contains("dark")?"Dark":"Light"}</p>
+      <button class="secondary" onclick="toggleTheme()">Change Theme</button>
+      <hr>
+      <p>Public uploads are stored using the AkyTube Cloudflare Worker and GitHub repository.</p>
+      <p>Maximum upload: MP4, 8 MB, 60 seconds.</p>
+      <button class="secondary" onclick="loadPublicVideos()">Refresh Public Videos</button>
+    `;
+    return;
+  }
+}
+
+/* ================= SEARCH ================= */
+
+function searchVideos(){
+  const query=document.getElementById("searchInput").value.trim().toLowerCase();
+
+  if(!query){
+    showPage("home");
+    return;
+  }
+
+  currentPage="search";
+  document.getElementById("pageTitle").textContent="Search Results";
+
+  const list=videos.filter(v=>
+    (v.title+" "+v.channel+" "+v.category+" "+v.description)
+      .toLowerCase().includes(query)
+  );
+
+  renderGrid(list);
+}
+
+/* ================= PLAYER ================= */
+
+function playVideo(id){
+  const video=videos.find(v=>String(v.id)===String(id));
+  if(!video) return;
+
+  current=video;
+
+  const player=document.getElementById("mainPlayer");
+  player.src=video.url;
+
+  document.getElementById("playerTitle").textContent=video.title;
+  document.getElementById("playerChannel").textContent=video.channel;
+  document.getElementById("playerDescription").textContent=video.description || "";
+
+  document.getElementById("playerModal").style.display="flex";
+
+  history=[String(video.id),...history.filter(x=>String(x)!==String(video.id))].slice(0,100);
+  persist();
+
+  renderComments();
+  updateLikeButton();
+}
+
+function toggleLike(){
+  if(!current) return;
+
+  const id=String(current.id);
+
+  likes=likes.filter(x=>String(x)!==id);
+
+  if(!current._liked){
+    likes.push(id);
+  }
+
+  current._liked=!current._liked;
+  current._disliked=false;
+
+  dislikes=dislikes.filter(x=>String(x)!==id);
+
+  persist();
+  updateLikeButton();
+}
+
+function toggleDislike(){
+  if(!current) return;
+
+  const id=String(current.id);
+
+  dislikes=dislikes.filter(x=>String(x)!==id);
+
+  if(!current._disliked){
+    dislikes.push(id);
+  }
+
+  current._disliked=!current._disliked;
+  current._liked=false;
+
+  likes=likes.filter(x=>String(x)!==id);
+
+  persist();
+  updateLikeButton();
+}
+
+function updateLikeButton(){
+  if(!current) return;
+
+  const id=String(current.id);
+  document.getElementById("likeBtn").textContent=
+    (likes.includes(id)?"👍 Liked":"👍 Like")+
+    " ("+likes.length+")";
+}
+
+function subscribeChannel(){
+  if(!current) return;
+
+  const channel=current.channel;
+
+  if(subscriptions.includes(channel)){
+    subscriptions=subscriptions.filter(x=>x!==channel);
+    toast("Unsubscribed");
+  }else{
+    subscriptions.push(channel);
+    toast("Subscribed!");
+  }
+
+  persist();
+}
+
+function saveWatchLater(){
+  if(!current) return;
+
+  const id=String(current.id);
+
+  if(!watchLater.includes(id)){
+    watchLater.push(id);
+    persist();
+    toast("Added to Watch Later");
+  }else{
+    toast("Already in Watch Later");
+  }
+}
+
+/* ================= COMMENTS ================= */
+
+function addComment(){
+  if(!current) return;
+
+  const input=document.getElementById("commentInput");
+  const text=input.value.trim();
+
+  if(!text) return;
+
+  const id=String(current.id);
+
+  if(!comments[id]) comments[id]=[];
+
+  comments[id].push({
+    text:text,
+    date:new Date().toLocaleString()
+  });
+
+  input.value="";
+  persist();
+  renderComments();
+}
+
+function renderComments(){
+  if(!current) return;
+
+  const list=comments[String(current.id)]||[];
+
+  document.getElementById("commentsList").innerHTML=
+    list.length
+    ? list.map(c=>`
+      <div class="comment">
+        <b>AkyTube User</b>
+        <p>${safe(c.text)}</p>
+        <small>${safe(c.date)}</small>
+      </div>
+    `).join("")
+    : '<p class="empty">No comments yet.</p>';
+}
+
+/* ================= PLAYLISTS ================= */
+
+function createPlaylist(){
+  const input=document.getElementById("newPlaylist");
+  const name=input.value.trim();
+
+  if(!name) return;
+
+  if(playlists[name]){
+    toast("Playlist already exists");
+    return;
+  }
+
+  playlists[name]=[];
+  persist();
+  renderPage();
+  toast("Playlist created");
+}
+
+/* ================= SHARE ================= */
+
+function shareVideo(){
+  if(!current) return;
+
+  const url=location.origin+location.pathname+
+    "#video="+encodeURIComponent(current.id);
+
+  if(navigator.share){
+    navigator.share({
+      title:current.title,
+      url:url
+    }).catch(()=>{});
+  }else if(navigator.clipboard){
+    navigator.clipboard.writeText(url);
+    toast("Video link copied");
+  }else{
+    toast(url);
+  }
+}
+
+/* ================= THEME ================= */
+
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "aky_theme",
+    document.body.classList.contains("dark")?"dark":"light"
+  );
+}
+
+if(localStorage.getItem("aky_theme")==="dark"){
+  document.body.classList.add("dark");
+}
+
+/* ================= INITIALIZATION ================= */
+
+renderCategories();
+renderPage();
+loadPublicVideos();
+
+window.addEventListener("load",()=>{
+  const hash=location.hash;
+
+  if(hash.startsWith("#video=")){
+    const id=decodeURIComponent(hash.substring(7));
+
+    setTimeout(()=>{
+      const video=videos.find(v=>String(v.id)===id);
+      if(video) playVideo(id);
+    },1500);
+  }
+});
+
+document.querySelectorAll(".modal").forEach(modal=>{
+  modal.addEventListener("click",event=>{
+    if(event.target===modal){
+      modal.style.display="none";
+    }
+  });
+});
+
 </script>
 </body>
 </html>
