@@ -1,223 +1,206 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AkyTube - Video Streaming Platform</title>
-  <style>
-    :root {
-      --bg: #0f0f0f;
-      --bg-sec: #181818;
-      --bg-hover: #272727;
-      --text: #f1f1f1;
-      --text-muted: #aaaaaa;
-      --accent: #ff0000;
-      --border: #303030;
-    }
-    body.light {
-      --bg: #ffffff;
-      --bg-sec: #f9f9f9;
-      --bg-hover: #e5e5e5;
-      --text: #0f0f0f;
-      --text-muted: #606060;
-      --border: #dddddd;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
-    body { background: var(--bg); color: var(--text); transition: 0.2s; }
-
-    header {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border);
-      gap: 10px;
-    }
-    .left-nav { display: flex; align-items: center; gap: 14px; }
-    .icon-btn {
-      background: none; border: none; color: var(--text); font-size: 20px;
-      cursor: pointer; padding: 6px 10px; border-radius: 50%;
-    }
-    .icon-btn:hover { background: var(--bg-hover); }
-    .logo { display: flex; align-items: center; gap: 6px; font-size: 20px; font-weight: 700; cursor: pointer; }
-    .logo span { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 14px; }
-
-    .search-box { display: flex; flex: 1; max-width: 520px; }
-    .search-box input {
-      width: 100%; padding: 8px 14px; border: 1px solid var(--border);
-      border-radius: 20px 0 0 20px; background: var(--bg-sec); color: var(--text); outline: none;
-    }
-    .search-box button {
-      padding: 8px 16px; border: 1px solid var(--border); border-left: none;
-      border-radius: 0 20px 20px 0; background: var(--bg-hover); color: var(--text); cursor: pointer;
-    }
-
-    .right-nav { display: flex; align-items: center; gap: 8px; }
-    .btn {
-      padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border);
-      background: var(--bg-hover); color: var(--text); cursor: pointer; font-weight: 600; font-size: 13px;
-    }
-    .btn-primary { background: var(--accent); color: #fff; border: none; }
-    .btn-primary:hover { opacity: 0.9; }
-
-    .container { display: flex; min-height: calc(100vh - 58px); }
-    aside {
-      width: 220px; padding: 12px; border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
-    }
-    aside.collapsed { display: none; }
-    .nav-item {
-      padding: 10px 12px; border-radius: 10px; cursor: pointer;
-      display: flex; align-items: center; gap: 12px; font-size: 14px;
-    }
-    .nav-item:hover, .nav-item.active { background: var(--bg-hover); font-weight: 600; }
-
-    main { flex: 1; padding: 16px 20px; overflow-x: hidden; }
-
-    .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 14px; }
-    .chip {
-      padding: 6px 14px; border-radius: 8px; background: var(--bg-hover);
-      cursor: pointer; font-size: 13px; white-space: nowrap; border: none; color: var(--text);
-    }
-    .chip.active { background: var(--text); color: var(--bg); font-weight: 600; }
-
-    .video-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px;
-    }
-    .card { cursor: pointer; border-radius: 12px; overflow: hidden; transition: 0.2s; }
-    .thumb-wrap {
-      position: relative; width: 100%; aspect-ratio: 16/9; background: #000;
-      border-radius: 12px; overflow: hidden;
-    }
-    .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .badge {
-      position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.85);
-      color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px;
-    }
-    .card-info { display: flex; gap: 10px; padding-top: 10px; }
-    .avatar {
-      width: 36px; height: 36px; border-radius: 50%; background: var(--accent);
-      color: #fff; display: flex; align-items: center; justify-content: center;
-      font-weight: bold; flex-shrink: 0;
-    }
-    .meta h4 { font-size: 15px; margin-bottom: 4px; line-height: 1.3; }
-    .meta p { font-size: 12px; color: var(--text-muted); }
-
-    #playerView { display: none; }
-    .player-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
-    video#mainVideo { width: 100%; max-height: 70vh; background: #000; border-radius: 12px; }
-    .video-title { font-size: 19px; margin: 12px 0; }
-    .channel-bar {
-      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-      gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
-    }
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
-    .comments-box { margin-top: 16px; }
-    .comment-input { display: flex; gap: 8px; margin: 10px 0 16px; }
-    .comment-input input {
-      flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
-      background: var(--bg-sec); color: var(--text);
-    }
-    .comment-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .up-next-item { display: flex; gap: 10px; margin-bottom: 12px; cursor: pointer; }
-    .up-next-item img { width: 140px; height: 80px; object-fit: cover; border-radius: 8px; background: #000; }
-
-    .modal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-      z-index: 200; align-items: center; justify-content: center; padding: 16px;
-    }
-    .modal.open { display: flex; }
-    .modal-box {
-      background: var(--bg-sec); border: 1px solid var(--border); border-radius: 14px;
-      width: 100%; max-width: 480px; padding: 20px; max-height: 90vh; overflow-y: auto;
-    }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 13px; margin-bottom: 5px; color: var(--text-muted); }
-    .form-group input, .form-group select {
-      width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border);
-      background: var(--bg); color: var(--text);
-    }
-    .status-box {
-      margin-top: 10px; padding: 10px; border-radius: 8px; font-size: 13px;
-      background: var(--bg-hover); display: none; word-break: break-word;
-    }
-
-    @media (max-width: 850px) {
-      .player-layout { grid-template-columns: 1fr; }
-      aside { position: fixed; left: 0; top: 58px; bottom: 0; background: var(--bg); z-index: 90; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AkyTube</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #0f0f0f; color: #fff; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #181818; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 20px; font-weight: bold; color: #fff; cursor: pointer; }
+  .logo span { background: #ff0000; padding: 2px 7px; border-radius: 5px; margin-right: 5px; }
+  .btn { background: #272727; color: #fff; border: 1px solid #444; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+  .btn-red { background: #ff0000; border: none; }
+  .search { padding: 8px 12px; border-radius: 20px; border: 1px solid #444; background: #0f0f0f; color: #fff; width: 40%; }
+  .wrap { display: flex; }
+  aside { width: 200px; background: #121212; min-height: calc(100vh - 56px); padding: 10px; border-right: 1px solid #2a2a2a; }
+  .nav { padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 4px; }
+  .nav:hover, .nav.active { background: #272727; }
+  main { flex: 1; padding: 16px; }
+  .chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .chip { background: #272727; color: #fff; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+  .chip.active { background: #fff; color: #000; font-weight: bold; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: #181818; border-radius: 10px; overflow: hidden; cursor: pointer; border: 1px solid #2a2a2a; }
+  .card img { width: 100%; height: 155px; object-fit: cover; display: block; background: #000; }
+  .card-body { padding: 10px; }
+  .card-title { font-weight: bold; font-size: 15px; margin-bottom: 5px; }
+  .card-sub { font-size: 12px; color: #aaa; }
+  #playerBox { display: none; }
+  video { width: 100%; max-height: 65vh; background: #000; border-radius: 10px; }
+  .p-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #333; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 50; padding: 15px; }
+  .modal-card { background: #1e1e1e; padding: 20px; border-radius: 12px; width: 100%; max-width: 440px; border: 1px solid #333; }
+  .field { margin-bottom: 10px; }
+  .field label { display: block; font-size: 13px; color: #bbb; margin-bottom: 4px; }
+  .field input, .field select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #444; background: #111; color: #fff; box-sizing: border-box; }
+  #statusMsg { margin-top: 10px; font-size: 13px; color: #4ade80; word-break: break-word; }
+  @media (max-width: 700px) { aside { display: none; } .search { width: 35%; } }
+</style>
 </head>
 <body>
 
 <header>
-  <div class="left-nav">
-    <button class="icon-btn" onclick="toggleSidebar()">☰</button>
-    <div class="logo" onclick="goHome()"><span>▶</span> AkyTube</div>
-  </div>
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search videos..." onkeyup="renderVideos()" />
-    <button onclick="renderVideos()">🔍</button>
-  </div>
-  <div class="right-nav">
-    <button class="btn btn-primary" onclick="openUpload()">+ Upload</button>
-    <button class="btn" onclick="syncFromGitHub()" title="Refresh from GitHub">↻ Sync</button>
-    <button class="icon-btn" onclick="toggleTheme()">☀</button>
+  <div class="logo" onclick="showHome()"><span>▶</span>AkyTube</div>
+  <input type="text" id="q" class="search" placeholder="Search..." oninput="drawGrid()">
+  <div>
+    <button class="btn btn-red" onclick="openModal()">+ Upload</button>
+    <button class="btn" onclick="loadFromGitHub()">↻ Sync</button>
   </div>
 </header>
 
-<div class="container">
-  <aside id="sidebar">
-    <div class="nav-item active" onclick="setFilter('home', this)">🏠 Home</div>
-    <div class="nav-item" onclick="setFilter('trending', this)">🔥 Trending</div>
-    <div class="nav-item" onclick="setFilter('subs', this)">📺 Subscriptions</div>
-    <div class="nav-item" onclick="setFilter('history', this)">📜 History</div>
-    <div class="nav-item" onclick="setFilter('watchlater', this)">⏰ Watch Later</div>
-    <div class="nav-item" onclick="setFilter('liked', this)">👍 Liked Videos</div>
+<div class="wrap">
+  <aside>
+    <div class="nav active" onclick="setTab('all', this)">🏠 Home</div>
+    <div class="nav" onclick="setTab('trending', this)">🔥 Trending</div>
+    <div class="nav" onclick="setTab('liked', this)">👍 Liked</div>
+    <div class="nav" onclick="setTab('saved', this)">⏰ Watch Later</div>
   </aside>
 
   <main>
-    <div id="homeView">
-      <div class="chips" id="categoryChips">
-        <button class="chip active" onclick="setCategory('All', this)">All</button>
-        <button class="chip" onclick="setCategory('My Channel', this)">My Channel</button>
-        <button class="chip" onclick="setCategory('Tech', this)">Tech</button>
-        <button class="chip" onclick="setCategory('Music', this)">Music</button>
-        <button class="chip" onclick="setCategory('Gaming', this)">Gaming</button>
+    <div id="homeBox">
+      <div class="chips">
+        <button class="chip active" onclick="setCat('All', this)">All</button>
+        <button class="chip" onclick="setCat('My Channel', this)">My Channel</button>
+        <button class="chip" onclick="setCat('Tech', this)">Tech</button>
+        <button class="chip" onclick="setCat('Music', this)">Music</button>
+        <button class="chip" onclick="setCat('Gaming', this)">Gaming</button>
       </div>
-      <div class="video-grid" id="videoGrid"></div>
+      <div class="grid" id="grid"></div>
     </div>
 
-    <div id="playerView">
-      <button class="btn" style="margin-bottom:12px;" onclick="goHome()">← Back to Home</button>
-      <div class="player-layout">
+    <div id="playerBox">
+      <button class="btn" style="margin-bottom:10px;" onclick="showHome()">← Back</button>
+      <video id="vid" controls playsinline></video>
+      <h2 id="pTitle" style="margin:10px 0;"></h2>
+      <div class="p-bar">
         <div>
-          <video id="mainVideo" controls autoplay playsinline></video>
-          <h2 class="video-title" id="pTitle"></h2>
-          <div class="channel-bar">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div class="avatar" id="pAvatar">A</div>
-              <div>
-                <div style="font-weight:600;" id="pChannel"></div>
-                <div style="font-size:12px;color:var(--text-muted);" id="pViews"></div>
-              </div>
-              <button class="btn btn-primary" id="subBtn" onclick="toggleSub()">Subscribe</button>
-            </div>
-            <div class="actions">
-              <button class="btn" id="likeBtn" onclick="toggleLike()">👍 0</button>
-              <button class="btn" id="saveBtn" onclick="toggleWatchLater()">⏰ Save</button>
-              <button class="btn" onclick="shareVideo()">🔗 Share</button>
-              <button class="btn" style="color:#ff5555;" onclick="deleteCurrentVideo()">🗑 Delete</button>
-            </div>
-          </div>
-
-          <div class="comments-box">
-            <h3>Comments (<span id="commentCount">0</span>)</h3>
-            <div class="comment-input">
-              <input type="text" id="commentInput" placeholder="Add a comment..." />
-              <button class="btn btn-primary" onclick="addComment()">Comment</button>
-            </div>
-            <div id="commentList"></div>
-          </div>
+          <strong id="pChan"></strong> • <span id="pViews" style="color:#aaa;font-size:13px;"></span>
         </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn" id="subBtn" onclick="doSub()">Subscribe</button>
+          <button class="btn" id="likeBtn" onclick="doLike()">👍 0</button>
+          <button class="btn" id="saveBtn" onclick="doSave()">⏰ Save</button>
+          <button class="btn" style="color:#f87171;" onclick="doDelete()">🗑 Delete</button>
+        </div>
+      </div>
+      <div style="margin-top:15px;">
+        <h4>Comments</h4>
+        <div style="display:flex;gap:8px;margin:8px 0;">
+          <input type="text" id="cText" placeholder="Comment likhein..." style="flex:1;padding:8px;border-radius:6px;border:1px solid #444;background:#181818;color:#fff;">
+          <button class="btn btn-red" onclick="addCom()">Post</button>
+        </div>
+        <div id="cList"></div>
+      </div>
+    </div>
+  </main>
+</div>
 
-        <div>
-          <h3 style="margin-bottom:12px;">Up Next</h3>
+<div class="modal" id="upModal">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h3 style="margin:0;">Upload Video</h3>
+      <button class="btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="field"><label>Title *</label><input type="text" id="fTitle" placeholder="Video title"></div>
+    <div class="field"><label>Channel</label><input type="text" id="fChan" value="My Channel"></div>
+    <div class="field"><label>Category</label>
+      <select id="fCat"><option>My Channel</option><option>Tech</option><option>Music</option><option>Gaming</option></select>
+    </div>
+    <div class="field"><label>MP4 File (Max 25MB)</label><input type="file" id="fFile" accept="video/*"></div>
+    <div class="field"><label>GitHub Token (Repo me save karne ke liye)</label><input type="password" id="fToken" placeholder="ghp_..."></div>
+    <div class="field"><label>Ya Direct MP4 URL</label><input type="url" id="fUrl" placeholder="https://..."></div>
+    <div class="field"><label>Thumbnail URL</label><input type="url" id="fThumb" placeholder="https://..."></div>
+    <button class="btn btn-red" style="width:100%;padding:10px;" id="upBtn" onclick="startUpload()">Upload & Save</button>
+    <div id="statusMsg"></div>
+  </div>
+</div>
+
+<script>
+  var OWNER = 'Ashok-Kumar-Yadaw';
+  var REPO = 'akytube';
+  var BRANCH = 'main';
+
+  var sample = [{
+    id: 'v1',
+    title: 'Sample Video - Big Buck Bunny',
+    channel: 'AkyTube',
+    category: 'Tech',
+    url: 'https://googleapis.com',
+    thumb: 'https://unsplash.com',
+    views: 100,
+    likes: 10
+  }];
+
+  var list = JSON.parse(localStorage.getItem('aky_list') || 'null') || sample;
+  var likes = JSON.parse(localStorage.getItem('aky_likes') || '[]');
+  var saved = JSON.parse(localStorage.getItem('aky_saved') || '[]');
+  var subs = JSON.parse(localStorage.getItem('aky_subs') || '[]');
+  var coms = JSON.parse(localStorage.getItem('aky_coms') || '{}');
+  var tab = 'all';
+  var cat = 'All';
+  var activeVid = null;
+
+  document.getElementById('fToken').value = localStorage.getItem('aky_tok') || '';
+
+  function persist() {
+    localStorage.setItem('aky_list', JSON.stringify(list));
+    localStorage.setItem('aky_likes', JSON.stringify(likes));
+    localStorage.setItem('aky_saved', JSON.stringify(saved));
+    localStorage.setItem('aky_subs', JSON.stringify(subs));
+    localStorage.setItem('aky_coms', JSON.stringify(coms));
+  }
+
+  function msg(txt, err) {
+    var el = document.getElementById('statusMsg');
+    el.style.color = err ? '#f87171' : '#4ade80';
+    el.innerText = txt;
+  }
+
+  function loadFromGitHub() {
+    var u = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/videos.json?t=' + Date.now();
+    fetch(u).then(function(r) { return r.ok ? r.json() : null; }).then(function(data) {
+      if (data && data.length > 0) {
+        list = data;
+        persist();
+        drawGrid();
+      }
+    }).catch(function() {});
+  }
+
+  function drawGrid() {
+    var g = document.getElementById('grid');
+    var q = document.getElementById('q').value.toLowerCase();
+    var arr = list.slice();
+
+    if (tab === 'trending') arr.sort(function(a, b) { return b.views - a.views; });
+    if (tab === 'liked') arr = arr.filter(function(v) { return likes.indexOf(v.id) !== -1; });
+    if (tab === 'saved') arr = arr.filter(function(v) { return saved.indexOf(v.id) !== -1; });
+    if (cat !== 'All') arr = arr.filter(function(v) { return v.category === cat; });
+    if (q) arr = arr.filter(function(v) { return v.title.toLowerCase().indexOf(q) !== -1; });
+
+    if (arr.length === 0) {
+      g.innerHTML = '<p style="color:#aaa;">Koi video nahi hai.</p>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < arr.length; i++) {
+      var v = arr.item ? arr.item(i) : arr.slice(i, i + 1).pop();
+      html += '<div class="card" onclick="openVid(\'' + v.id + '\')">' +
+        '<img src="' + v.thumb + '">' +
+        '<div class="card-body">' +
+          '<div class="card-title">' + v.title + '</div>' +
+          '<div class="card-sub">' + v.channel + ' • ' + v.views + ' views</div>' +
+        '</div></div>';
+    }
+    g.innerHTML = html;
+  }
+
+  function openVid(id) {
+    var v = null;
+    for (var i = 0; i < list.length; i++) {
+      var item = list.slice(i, i + 1).pop();
+      if (item.id === id) { v = item; break; }
+    }
+    if (!v) return;
