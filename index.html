@@ -396,8 +396,8 @@ footer{
 
 /* ================= CONFIGURATION ================= */
 
-const UPLOAD_API =
-  "https://akytube.ashokyadawji.workers.dev";
+  const UPLOAD_API =
+  "https://akytube.ashokyadawji.workers.dev/upload";
 
 const TURNSTILE_SITE_KEY =
   "0x4AAAAAAGNFRaEkymrkl9UQ";
@@ -560,7 +560,7 @@ async function uploadVideo(){
 
     const formData=new FormData();
 
-    formData.append("file",file);
+    formData.append("video",file);
     formData.append("title",title);
     formData.append("channel",
       document.getElementById("fChan").value.trim() ||
